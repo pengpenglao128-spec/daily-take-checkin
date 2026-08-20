@@ -1,0 +1,2037 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F6F8FF">
+    <meta
+      name="description"
+      content="一张明亮、清楚的每日场记板，记录阅读、学英语、研究自媒体、自媒体拍摄和散步。"
+    >
+    <title>今日开机 · Daily Take</title>
+    <style>
+:root {
+  --bg: #F6F8FF;
+  --ink: #17181A;
+  --lime: #D9FF65;
+  --purple: #BEAFFF;
+  --orange: #FFAA78;
+  --blue: #79CCFF;
+  --yellow: #FFE66B;
+  --paper: #FFFFFF;
+  --border: 2px solid var(--ink);
+  --shadow: 6px 6px 0 var(--ink);
+  --radius-large: 30px;
+  --radius-medium: 22px;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--bg);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 4%, rgb(190 175 255 / 24%), transparent 24rem),
+    radial-gradient(circle at 92% 12%, rgb(121 204 255 / 21%), transparent 22rem),
+    var(--bg);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 4px solid var(--ink);
+  outline-offset: 4px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.app-shell {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 22px clamp(18px, 3.4vw, 52px) 52px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 58px;
+  margin-bottom: 30px;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.brand-mark::after {
+  position: absolute;
+  inset: 7px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  content: "";
+}
+
+.brand-lockup h1 {
+  margin: 0;
+  font-size: clamp(0.98rem, 1.7vw, 1.22rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-lockup h1 span,
+.eyebrow,
+.task-index,
+.slate-year,
+.progress-ring__value,
+.slate-stats dd,
+.week-day__count {
+  font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+}
+
+.brand-lockup h1 span {
+  font-size: 0.76em;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+}
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-button {
+  min-height: 46px;
+  padding: 0 17px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-size: 0.86rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.nav-button--arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: var(--lime);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(-2px, -2px);
+}
+
+.nav-button:active:not(:disabled) {
+  box-shadow: none;
+  transform: translate(1px, 1px);
+}
+
+.nav-button:disabled {
+  border-color: rgb(23 24 26 / 38%);
+  color: rgb(23 24 26 / 56%);
+  background: rgb(255 255 255 / 50%);
+}
+
+.bento-shell {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.daily-slate,
+.week-strip-card,
+.task-card {
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.daily-slate {
+  position: relative;
+  display: grid;
+  grid-column: span 7;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  min-height: 344px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  background: var(--lime);
+}
+
+.daily-slate[data-state="complete"] {
+  background: var(--yellow);
+}
+
+.daily-slate[data-state="future"] {
+  background: var(--paper);
+}
+
+.slate-clapper {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 40px;
+  border-bottom: 2px solid var(--ink);
+  background: repeating-linear-gradient(
+    125deg,
+    var(--ink) 0,
+    var(--ink) 28px,
+    var(--paper) 28px,
+    var(--paper) 54px
+  );
+}
+
+.daily-slate.is-celebrating .slate-clapper {
+  transform-origin: 30px 100%;
+  animation: slate-hinge-clap 720ms cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+
+@keyframes slate-hinge-clap {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+
+  34% {
+    transform: translateY(-3px) rotate(-5deg);
+  }
+
+  57% {
+    transform: rotate(1.5deg);
+  }
+
+  74% {
+    transform: rotate(-0.75deg);
+  }
+}
+
+.slate-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 72px clamp(28px, 4vw, 54px) 38px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.slate-year {
+  margin: 0 0 4px;
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.slate-copy h2 {
+  max-width: 520px;
+  margin: 0;
+  font-size: clamp(2.35rem, 5.2vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.98;
+}
+
+.slate-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 0;
+  padding: 9px 13px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 66%);
+  font-size: 0.81rem;
+  font-weight: 720;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.slate-metrics {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 62px clamp(24px, 3vw, 40px) 34px;
+  border-left: 2px solid var(--ink);
+  background: rgb(255 255 255 / 38%);
+}
+
+.progress-ring {
+  position: relative;
+  display: grid;
+  width: 166px;
+  aspect-ratio: 1;
+  place-content: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: conic-gradient(var(--ink) var(--progress), var(--paper) 0);
+  box-shadow: 5px 5px 0 var(--ink);
+  text-align: center;
+}
+
+.progress-ring::before {
+  position: absolute;
+  inset: 13px;
+  border: 2px solid var(--ink);
+  border-radius: inherit;
+  background: var(--lime);
+  content: "";
+}
+
+.daily-slate[data-state="complete"] .progress-ring::before {
+  background: var(--yellow);
+}
+
+.daily-slate[data-state="future"] .progress-ring::before {
+  background: var(--paper);
+}
+
+.progress-ring > * {
+  position: relative;
+  z-index: 1;
+}
+
+.progress-ring__value {
+  font-size: 2.65rem;
+  font-weight: 900;
+  letter-spacing: -0.1em;
+  line-height: 1;
+}
+
+.progress-ring__value small {
+  margin-left: 3px;
+  font-size: 0.4em;
+  letter-spacing: 0;
+}
+
+.progress-ring__label {
+  margin-top: 6px;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.slate-stats {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.slate-stats div {
+  padding: 0 14px;
+  text-align: center;
+}
+
+.slate-stats div + div {
+  border-left: 1.5px solid var(--ink);
+}
+
+.slate-stats dt {
+  margin-bottom: 3px;
+  font-size: 0.66rem;
+  font-weight: 750;
+}
+
+.slate-stats dd {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.slate-stats dd span {
+  margin-left: 3px;
+  font-size: 0.52em;
+}
+
+.week-strip-card {
+  grid-column: span 5;
+  padding: 30px;
+  border-radius: var(--radius-large);
+  background: var(--purple);
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.section-heading h2 {
+  margin: 7px 0 0;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-weight: 850;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+.section-heading > p {
+  margin: 0;
+  color: rgb(23 24 26 / 72%);
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.week-strip__heading {
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.week-strip__heading > p {
+  white-space: nowrap;
+}
+
+.week-list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.week-day {
+  display: flex;
+  min-width: 0;
+  min-height: 204px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 3px 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 62%);
+  cursor: pointer;
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.week-day:hover {
+  background: var(--paper);
+  transform: translateY(-3px);
+}
+
+.week-day:active {
+  transform: translateY(1px);
+}
+
+.week-day[aria-current="date"] {
+  background: var(--ink);
+  box-shadow: 3px 3px 0 var(--paper);
+  color: var(--paper);
+}
+
+.week-day.is-complete:not([aria-current="date"]) {
+  background: var(--lime);
+}
+
+.week-day__weekday {
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.week-day strong {
+  font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  font-weight: 900;
+}
+
+.week-day__count {
+  writing-mode: vertical-rl;
+  font-size: 0.57rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+}
+
+.task-grid {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto repeat(2, minmax(206px, auto));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.task-grid__heading {
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
+}
+
+.task-grid__heading > p {
+  max-width: 420px;
+  text-align: right;
+}
+
+.task-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 206px;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px;
+  border-radius: var(--radius-medium);
+  text-align: left;
+}
+
+button.task-card {
+  cursor: pointer;
+  transition: transform 170ms ease, box-shadow 170ms ease, filter 170ms ease;
+}
+
+button.task-card:hover:not(:disabled) {
+  box-shadow: 9px 9px 0 var(--ink);
+  transform: translate(-3px, -3px);
+}
+
+button.task-card:active:not(:disabled) {
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(2px, 2px);
+}
+
+button.task-card:disabled,
+.task-card--shooting:has(.upload-button:disabled) {
+  filter: saturate(0.34);
+}
+
+.task-card--lime {
+  background: var(--lime);
+}
+
+.task-card--purple {
+  background: var(--purple);
+}
+
+.task-card--orange {
+  background: var(--orange);
+}
+
+.task-card--blue {
+  background: var(--blue);
+}
+
+.task-card--yellow {
+  background: var(--yellow);
+}
+
+.task-card[data-task-id="reading"] {
+  grid-column: 6 / span 4;
+  grid-row: 2;
+}
+
+.task-card[data-task-id="english"] {
+  grid-column: 10 / span 3;
+  grid-row: 2;
+}
+
+.task-card[data-task-id="research"] {
+  grid-column: 6 / span 3;
+  grid-row: 3;
+}
+
+.task-card[data-task-id="walking"] {
+  grid-column: 9 / span 4;
+  grid-row: 3;
+}
+
+.task-card--shooting {
+  grid-column: 1 / span 5;
+  grid-row: 2 / span 2;
+  min-height: 430px;
+  padding: 28px;
+}
+
+.task-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.task-index {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.task-check {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-content: center;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 58%);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.task-card.is-complete .task-check {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.task-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-card__body strong {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.65rem, 2.8vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.task-card__body > span {
+  max-width: 19em;
+  font-size: 0.76rem;
+  font-weight: 620;
+  line-height: 1.55;
+}
+
+.task-state {
+  width: fit-content;
+  padding-top: 9px;
+  border-top: 1.5px solid var(--ink);
+  font-size: 0.68rem;
+  font-weight: 780;
+}
+
+.shooting-copy {
+  margin: auto 0;
+}
+
+.shooting-kicker {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.shooting-copy h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  font-weight: 950;
+  letter-spacing: -0.1em;
+  line-height: 0.88;
+}
+
+.shooting-copy > p:last-child {
+  max-width: 28em;
+  margin: 20px 0 0;
+  font-size: 0.83rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.evidence-action {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 22px;
+  border-top: 1.5px solid var(--ink);
+}
+
+.evidence-preview {
+  min-height: 0;
+}
+
+.evidence-preview:empty {
+  display: none;
+}
+
+.evidence-preview__pending {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.evidence-preview__media {
+  display: block;
+  width: min(100%, 360px);
+  max-height: 180px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--ink);
+  object-fit: cover;
+}
+
+.evidence-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.evidence-delete-button {
+  background: transparent;
+  color: var(--ink);
+}
+
+.evidence-action p {
+  max-width: 17em;
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 730;
+  line-height: 1.45;
+}
+
+.upload-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 16px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.upload-button:hover:not(:disabled) {
+  box-shadow: 4px 4px 0 var(--paper);
+  transform: translate(-2px, -2px);
+}
+
+.upload-button:active:not(:disabled) {
+  box-shadow: none;
+  transform: translate(1px, 1px);
+}
+
+.upload-button:disabled {
+  border-color: rgb(23 24 26 / 54%);
+  background: rgb(23 24 26 / 54%);
+}
+
+.toast-region {
+  position: fixed;
+  z-index: 20;
+  right: 24px;
+  bottom: 24px;
+  max-width: min(360px, calc(100vw - 36px));
+  padding: 14px 18px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--ink);
+  box-shadow: 5px 5px 0 var(--orange);
+  color: var(--paper);
+  font-size: 0.82rem;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast-region:empty {
+  display: none;
+}
+
+.toast-region.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1119px) {
+  .daily-slate {
+    grid-column: 1 / -1;
+  }
+
+  .week-strip-card {
+    grid-column: 1 / -1;
+  }
+
+  .week-day {
+    min-height: 116px;
+  }
+
+  .week-day__count {
+    writing-mode: horizontal-tb;
+  }
+}
+
+@media (max-width: 719px) {
+  .app-shell {
+    padding: 16px 14px 36px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 17px;
+    margin-bottom: 22px;
+  }
+
+  .brand-lockup {
+    justify-content: center;
+  }
+
+  .date-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .nav-button {
+    min-width: 0;
+    padding: 0 13px;
+  }
+
+  .nav-button--arrow {
+    justify-content: center;
+  }
+
+  .nav-button__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .bento-shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .daily-slate,
+  .week-strip-card,
+  .task-grid {
+    grid-column: 1;
+  }
+
+  .daily-slate {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .slate-copy {
+    min-height: 320px;
+    padding: 66px 24px 28px;
+  }
+
+  .slate-copy h2 {
+    font-size: clamp(2.6rem, 14vw, 4.6rem);
+  }
+
+  .slate-status {
+    align-items: flex-start;
+    border-radius: 16px;
+    font-size: 0.75rem;
+  }
+
+  .status-dot {
+    margin-top: 2px;
+  }
+
+  .slate-metrics {
+    flex-direction: row;
+    gap: 22px;
+    padding: 28px 22px;
+    border-top: 2px solid var(--ink);
+    border-left: 0;
+  }
+
+  .progress-ring {
+    width: 132px;
+    flex: 0 0 auto;
+  }
+
+  .progress-ring__value {
+    font-size: 2.1rem;
+  }
+
+  .slate-stats {
+    align-self: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .slate-stats div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .slate-stats div + div {
+    border-top: 1.5px solid var(--ink);
+    border-left: 0;
+  }
+
+  .week-strip-card {
+    padding: 24px 18px;
+  }
+
+  .week-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .week-day {
+    min-height: 88px;
+    padding: 11px 4px 9px;
+    border-radius: 13px;
+  }
+
+  .week-day strong {
+    font-size: 1rem;
+  }
+
+  .week-day__count {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.5rem;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .task-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .task-grid__heading,
+  .task-card[data-task-id] {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .task-grid__heading > p {
+    max-width: none;
+    text-align: left;
+  }
+
+  .task-card {
+    min-height: 210px;
+    padding: 21px;
+  }
+
+  .task-card--shooting {
+    min-height: 390px;
+    padding: 24px;
+  }
+
+  .shooting-copy h3 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .evidence-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .upload-button {
+    width: 100%;
+  }
+
+  .evidence-buttons {
+    width: 100%;
+  }
+
+  .toast-region {
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .week-day__count {
+    font-size: 0.45rem;
+  }
+
+  .slate-metrics {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .slate-stats {
+    width: min(100%, 250px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-slate.is-celebrating .slate-clapper {
+    animation: none;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup" aria-label="今日开机 Daily Take">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <h1>今日开机 <span>· DAILY TAKE</span></h1>
+        </div>
+
+        <nav class="date-nav" aria-label="切换记录日期">
+          <button class="nav-button nav-button--arrow" type="button" data-date-action="previous">
+            <span aria-hidden="true">←</span>
+            <span class="nav-button__text">前一天</span>
+          </button>
+          <button class="nav-button" type="button" data-date-action="today">回到今天</button>
+          <button class="nav-button nav-button--arrow" type="button" data-date-action="next">
+            <span class="nav-button__text">后一天</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </nav>
+      </header>
+
+      <main class="bento-shell" id="main-content">
+        <section
+          class="daily-slate"
+          id="daily-slate"
+          aria-labelledby="daily-slate-title"
+        ></section>
+
+        <section
+          class="week-strip-card"
+          id="week-strip"
+          aria-labelledby="week-strip-title"
+        ></section>
+
+        <section
+          class="task-grid"
+          id="task-grid"
+          aria-labelledby="task-grid-title"
+        ></section>
+      </main>
+    </div>
+
+    <input id="evidence-input" type="file" accept="image/*,video/*" hidden>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+(() => {
+  // ../../2026-08-18/new-chat/outputs/daily-take-checkin/src/model.js
+  var TASKS = ["reading", "english", "research", "shooting", "walking"];
+  var TASK_NAMES = Object.freeze({
+    reading: "\u9605\u8BFB",
+    english: "\u5B66\u82F1\u8BED",
+    research: "\u7814\u7A76\u81EA\u5A92\u4F53",
+    shooting: "\u81EA\u5A92\u4F53\u62CD\u6444",
+    walking: "\u6563\u6B65"
+  });
+  function toDateKey(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+      throw new TypeError("A valid Date is required.");
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  function refreshCalendarContext({ todayDateKey: todayDateKey2 = null, selectedDateKey: selectedDateKey2 = null } = {}, now = /* @__PURE__ */ new Date()) {
+    const nextTodayDateKey = toDateKey(now);
+    const wasViewingToday = selectedDateKey2 === null || todayDateKey2 !== null && selectedDateKey2 === todayDateKey2;
+    const nextSelectedDateKey = wasViewingToday ? nextTodayDateKey : selectedDateKey2;
+    return {
+      todayDateKey: nextTodayDateKey,
+      selectedDateKey: nextSelectedDateKey,
+      changed: todayDateKey2 !== nextTodayDateKey || selectedDateKey2 !== nextSelectedDateKey
+    };
+  }
+  function dateFromKey(key) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+    if (!match) {
+      throw new TypeError(`Invalid date key: ${key}`);
+    }
+    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    if (toDateKey(date) !== key) {
+      throw new TypeError(`Invalid date key: ${key}`);
+    }
+    return date;
+  }
+  function addDays(key, amount) {
+    const date = dateFromKey(key);
+    date.setDate(date.getDate() + amount);
+    return toDateKey(date);
+  }
+  function createDayRecord(key) {
+    return {
+      date: key,
+      tasks: Object.fromEntries(TASKS.map((taskId) => [taskId, false])),
+      evidence: null,
+      celebrationSeen: false
+    };
+  }
+  function setTask(record, taskId, complete) {
+    if (!TASKS.includes(taskId)) {
+      throw new RangeError(`Unknown task ID: ${taskId}`);
+    }
+    if (taskId === "shooting") {
+      throw new Error("The shooting task can only be changed through evidence.");
+    }
+    return {
+      ...record,
+      tasks: {
+        ...record.tasks,
+        [taskId]: Boolean(complete)
+      }
+    };
+  }
+  function setShootingEvidence(record, metadata) {
+    const evidence = metadata == null ? null : { ...metadata };
+    return {
+      ...record,
+      tasks: {
+        ...record.tasks,
+        shooting: evidence !== null
+      },
+      evidence
+    };
+  }
+  function completionCount(record) {
+    return TASKS.filter((taskId) => record?.tasks?.[taskId] === true).length;
+  }
+  function completionPercent(record) {
+    return completionCount(record) / TASKS.length * 100;
+  }
+  function weekKeys(endingKey) {
+    return Array.from({ length: 7 }, (_, index) => addDays(endingKey, index - 6));
+  }
+  function calculateStreak(records2, todayKey) {
+    let key = todayKey;
+    if (completionCount(records2?.[key]) !== TASKS.length) {
+      key = addDays(key, -1);
+    }
+    let streak = 0;
+    while (completionCount(records2?.[key]) === TASKS.length) {
+      streak += 1;
+      key = addDays(key, -1);
+    }
+    return streak;
+  }
+  function validateEvidence(fileLike) {
+    const type = fileLike?.type;
+    const size = fileLike?.size;
+    if (typeof type !== "string" || !/^(image|video)\//.test(type)) {
+      return {
+        valid: false,
+        code: "unsupported-type",
+        message: "\u8BF7\u9009\u62E9\u7167\u7247\u6216\u89C6\u9891"
+      };
+    }
+    if (!Number.isFinite(size) || size < 0) {
+      return {
+        valid: false,
+        code: "invalid-file",
+        message: "\u6587\u4EF6\u4FE1\u606F\u65E0\u6548"
+      };
+    }
+    if (size > 100 * 1024 * 1024) {
+      return {
+        valid: false,
+        code: "file-too-large",
+        message: "\u6587\u4EF6\u8D85\u8FC7 100 MB\uFF0C\u8BF7\u538B\u7F29\u6216\u6539\u4F20\u7167\u7247"
+      };
+    }
+    return {
+      valid: true,
+      code: null,
+      message: null
+    };
+  }
+
+  // ../../2026-08-18/new-chat/outputs/daily-take-checkin/src/evidence-controller.js
+  var EvidenceMutationError = class extends Error {
+    constructor(phase, cause) {
+      super(`Evidence mutation failed during ${phase}.`, { cause });
+      this.name = "EvidenceMutationError";
+      this.phase = phase;
+    }
+  };
+  function evidenceMetadata(entry) {
+    return {
+      name: entry.name,
+      type: entry.type,
+      size: entry.size,
+      updatedAt: entry.updatedAt
+    };
+  }
+  function createEvidenceOperationGuard() {
+    const pendingDates = /* @__PURE__ */ new Set();
+    return {
+      isPending(dateKey) {
+        return pendingDates.has(dateKey);
+      },
+      async run(dateKey, operation) {
+        if (pendingDates.has(dateKey)) {
+          return { started: false, value: null };
+        }
+        pendingDates.add(dateKey);
+        try {
+          return { started: true, value: await operation() };
+        } finally {
+          pendingDates.delete(dateKey);
+        }
+      }
+    };
+  }
+  function currentRecord(dateKey, getRecord) {
+    return getRecord(dateKey) ?? createDayRecord(dateKey);
+  }
+  async function saveEvidenceForDate({
+    dateKey,
+    file,
+    putEvidence: putEvidence2,
+    getRecord,
+    persistRecord: persistRecord2
+  }) {
+    const validation = validateEvidence(file);
+    if (!validation.valid) {
+      return { status: "invalid", validation };
+    }
+    let entry;
+    try {
+      entry = await putEvidence2(dateKey, file);
+    } catch (error) {
+      throw new EvidenceMutationError("media-write", error);
+    }
+    const nextRecord = setShootingEvidence(
+      currentRecord(dateKey, getRecord),
+      evidenceMetadata(entry)
+    );
+    let persistResult;
+    try {
+      persistResult = persistRecord2(dateKey, nextRecord);
+    } catch (error) {
+      throw new EvidenceMutationError("record-write", error);
+    }
+    return {
+      status: "saved",
+      entry,
+      record: nextRecord,
+      persistResult
+    };
+  }
+  async function deleteEvidenceForDate({
+    dateKey,
+    deleteEvidence: deleteEvidence2,
+    getRecord,
+    persistRecord: persistRecord2
+  }) {
+    try {
+      await deleteEvidence2(dateKey);
+    } catch (error) {
+      throw new EvidenceMutationError("media-delete", error);
+    }
+    const nextRecord = setShootingEvidence(currentRecord(dateKey, getRecord), null);
+    let persistResult;
+    try {
+      persistResult = persistRecord2(dateKey, nextRecord);
+    } catch (error) {
+      throw new EvidenceMutationError("record-delete", error);
+    }
+    return {
+      status: "deleted",
+      record: nextRecord,
+      persistResult
+    };
+  }
+
+  // ../../2026-08-18/new-chat/outputs/daily-take-checkin/src/media-db.js
+  var DATABASE_NAME = "daily-take-media";
+  var DATABASE_VERSION = 1;
+  var STORE_NAME = "evidence";
+  var databasePromise = null;
+  function mediaDbAvailable() {
+    return typeof globalThis.indexedDB?.open === "function";
+  }
+  function openDatabase() {
+    if (!mediaDbAvailable()) {
+      return Promise.reject(new Error("IndexedDB is unavailable."));
+    }
+    if (databasePromise) return databasePromise;
+    databasePromise = new Promise((resolve, reject) => {
+      const request = globalThis.indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
+      request.onupgradeneeded = () => {
+        const database = request.result;
+        if (!database.objectStoreNames.contains(STORE_NAME)) {
+          database.createObjectStore(STORE_NAME, { keyPath: "dateKey" });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error ?? new Error("Unable to open IndexedDB."));
+      request.onblocked = () => reject(new Error("IndexedDB upgrade is blocked."));
+    });
+    return databasePromise;
+  }
+  function completeTransaction(transaction, resultRequest) {
+    return new Promise((resolve, reject) => {
+      transaction.oncomplete = () => resolve(resultRequest?.result);
+      transaction.onerror = () => reject(transaction.error ?? resultRequest?.error ?? new Error("IndexedDB transaction failed."));
+      transaction.onabort = () => reject(transaction.error ?? resultRequest?.error ?? new Error("IndexedDB transaction aborted."));
+    });
+  }
+  async function putEvidence(dateKey, file) {
+    const database = await openDatabase();
+    const entry = {
+      dateKey,
+      blob: file,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+    };
+    const transaction = database.transaction(STORE_NAME, "readwrite");
+    const request = transaction.objectStore(STORE_NAME).put(entry);
+    await completeTransaction(transaction, request);
+    return entry;
+  }
+  async function getEvidence(dateKey) {
+    const database = await openDatabase();
+    const transaction = database.transaction(STORE_NAME, "readonly");
+    const request = transaction.objectStore(STORE_NAME).get(dateKey);
+    return completeTransaction(transaction, request);
+  }
+  async function deleteEvidence(dateKey) {
+    const database = await openDatabase();
+    const transaction = database.transaction(STORE_NAME, "readwrite");
+    const request = transaction.objectStore(STORE_NAME).delete(dateKey);
+    await completeTransaction(transaction, request);
+  }
+
+  // ../../2026-08-18/new-chat/outputs/daily-take-checkin/src/records-store.js
+  var STORAGE_KEY = "daily-take-records";
+  function isPlainObject(value) {
+    return value !== null && typeof value === "object" && !Array.isArray(value);
+  }
+  function isDateKey(key) {
+    try {
+      addDays(key, 0);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  function normalizeRecord(key, value) {
+    const source = isPlainObject(value) ? value : {};
+    const record = createDayRecord(key);
+    const tasks = { ...record.tasks };
+    for (const taskId of TASKS) {
+      if (taskId !== "shooting") {
+        tasks[taskId] = source.tasks?.[taskId] === true;
+      }
+    }
+    const evidence = isPlainObject(source.evidence) ? { ...source.evidence } : null;
+    return setShootingEvidence({
+      ...record,
+      tasks,
+      celebrationSeen: source.celebrationSeen === true
+    }, evidence);
+  }
+  function loadRecords(storage2) {
+    let parsed;
+    try {
+      const raw = storage2.getItem(STORAGE_KEY);
+      if (raw === null) {
+        return {};
+      }
+      parsed = JSON.parse(raw);
+    } catch {
+      return {};
+    }
+    if (!isPlainObject(parsed)) {
+      return {};
+    }
+    return Object.fromEntries(Object.entries(parsed).filter(([key]) => isDateKey(key)).map(([key, value]) => [key, normalizeRecord(key, value)]));
+  }
+  function saveRecords(storage2, records2) {
+    storage2.setItem(STORAGE_KEY, JSON.stringify(records2));
+  }
+
+  // ../../2026-08-18/new-chat/outputs/daily-take-checkin/src/app.js
+  var TASK_DETAILS = {
+    reading: {
+      index: "01",
+      label: TASK_NAMES.reading,
+      prompt: "\u8BFB\u4E00\u70B9\uFF0C\u8BA9\u4ECA\u5929\u6709\u8F93\u5165",
+      accent: "lime"
+    },
+    english: {
+      index: "02",
+      label: TASK_NAMES.english,
+      prompt: "\u542C\u3001\u8BFB\u6216\u8BF4\uFF0C\u5B66\u4E00\u6B21\u82F1\u8BED",
+      accent: "purple"
+    },
+    research: {
+      index: "03",
+      label: TASK_NAMES.research,
+      prompt: "\u7814\u7A76\u4E00\u4E2A\u81EA\u5A92\u4F53\u95EE\u9898\uFF0C\u7559\u4E0B\u4E00\u6761\u7ED3\u8BBA",
+      accent: "blue"
+    },
+    shooting: {
+      index: "04",
+      label: TASK_NAMES.shooting,
+      prompt: "\u7528\u4E00\u5F20\u7167\u7247\u6216\u4E00\u6BB5\u89C6\u9891\u5B8C\u6210\u6253\u677F",
+      accent: "orange"
+    },
+    walking: {
+      index: "05",
+      label: TASK_NAMES.walking,
+      prompt: "\u51FA\u53BB\u8D70\u4E00\u8D70\uFF0C\u8BA9\u8EAB\u4F53\u6362\u4E2A\u573A\u666F",
+      accent: "yellow"
+    }
+  };
+  var records = {};
+  var selectedDateKey = null;
+  var todayDateKey = null;
+  var storage = null;
+  var toastTimer = null;
+  var celebrationTimer = null;
+  var evidenceObjectUrl = null;
+  var evidencePreviewRequest = 0;
+  var evidenceOperations = createEvidenceOperationGuard();
+  function getTodayKey() {
+    return toDateKey(/* @__PURE__ */ new Date());
+  }
+  function prepareCompletionTransition(dateKey, previousRecord, nextRecord, currentDateKey = getTodayKey()) {
+    const previousComplete = completionCount(previousRecord) === TASKS.length;
+    const celebrationAlreadySeen = previousRecord?.celebrationSeen === true || previousComplete;
+    const shouldCelebrate = dateKey === currentDateKey && !celebrationAlreadySeen && completionCount(previousRecord) < TASKS.length && completionCount(nextRecord) === TASKS.length;
+    const shouldPersistSeen = celebrationAlreadySeen || shouldCelebrate;
+    return {
+      record: shouldPersistSeen ? { ...nextRecord, celebrationSeen: true } : nextRecord,
+      shouldCelebrate
+    };
+  }
+  function refreshDateContext(now = /* @__PURE__ */ new Date()) {
+    const nextContext = refreshCalendarContext({ todayDateKey, selectedDateKey }, now);
+    todayDateKey = nextContext.todayDateKey;
+    selectedDateKey = nextContext.selectedDateKey;
+    return nextContext.changed;
+  }
+  function ensureState() {
+    refreshDateContext();
+  }
+  function ensureRecord(key) {
+    if (!records[key]) {
+      records = {
+        ...records,
+        [key]: createDayRecord(key)
+      };
+    }
+    return records[key];
+  }
+  function dateFromKey2(key) {
+    const [year, month, day] = key.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
+  function formatLongDate(key) {
+    return new Intl.DateTimeFormat("zh-CN", {
+      month: "long",
+      day: "numeric",
+      weekday: "long"
+    }).format(dateFromKey2(key));
+  }
+  function formatWeekday(key) {
+    return new Intl.DateTimeFormat("zh-CN", { weekday: "short" }).format(dateFromKey2(key)).replace("\u5468", "");
+  }
+  function dayNumber(key) {
+    return String(Number(key.slice(-2)));
+  }
+  function dayRelation(key) {
+    if (key === todayDateKey) return "today";
+    return key > todayDateKey ? "future" : "past";
+  }
+  function statusCopy(record, relation) {
+    const complete = completionCount(record);
+    if (relation === "future") return "\u672A\u6765\u65E5\u671F \xB7 \u53EA\u8BFB\u9884\u89C8";
+    if (complete === TASKS.length) {
+      return relation === "today" ? "\u4ECA\u65E5\u6536\u5DE5 \xB7 \u4E94\u9879\u5168\u90E8\u5B8C\u6210" : "\u5F53\u65E5\u6536\u5DE5 \xB7 \u4E94\u9879\u5168\u90E8\u5B8C\u6210";
+    }
+    if (complete === 0) {
+      return relation === "today" ? "\u4ECA\u5929\u8FD8\u6CA1\u5F00\u673A\uFF0C\u5148\u5B8C\u6210\u6700\u8F7B\u7684\u4E00\u9879" : "\u8FD9\u5929\u8FD8\u6CA1\u6709\u7559\u4E0B\u5B8C\u6210\u8BB0\u5F55";
+    }
+    const remaining = TASKS.length - complete;
+    return relation === "today" ? `\u6B63\u5728\u63A8\u8FDB \xB7 \u8FD8\u5DEE ${remaining} \u9879\u6536\u5DE5` : `\u5F53\u65E5\u5B8C\u6210 ${complete} \u9879 \xB7 \u8FD8\u53EF\u7EE7\u7EED\u8865\u8BB0`;
+  }
+  function showToast(message) {
+    const region = document.querySelector("#toast-region");
+    if (!region) return;
+    window.clearTimeout(toastTimer);
+    region.textContent = message;
+    region.classList.add("is-visible");
+    toastTimer = window.setTimeout(() => {
+      region.classList.remove("is-visible");
+    }, 2800);
+  }
+  function showCompletionCelebration(dateKey) {
+    showToast("\u4ECA\u65E5\u6536\u5DE5\uFF0C\u4E94\u4E2A\u955C\u5934\u5168\u90E8\u5B8C\u6210");
+    if (dateKey !== selectedDateKey) return;
+    const slate = document.querySelector("#daily-slate");
+    if (!slate) return;
+    window.clearTimeout(celebrationTimer);
+    slate.classList.remove("is-celebrating");
+    void slate.offsetWidth;
+    slate.classList.add("is-celebrating");
+    celebrationTimer = window.setTimeout(() => {
+      slate.classList.remove("is-celebrating");
+    }, 900);
+  }
+  function releaseEvidencePreview() {
+    if (evidenceObjectUrl) {
+      URL.revokeObjectURL(evidenceObjectUrl);
+      evidenceObjectUrl = null;
+    }
+  }
+  function renderEvidenceMessage(message) {
+    const root = document.querySelector("#evidence-preview");
+    if (!root) return;
+    const copy = document.createElement("p");
+    copy.className = "evidence-preview__pending";
+    copy.textContent = message;
+    root.replaceChildren(copy);
+  }
+  function clearEvidencePreviewFor(dateKey) {
+    if (dateKey !== selectedDateKey) return;
+    evidencePreviewRequest += 1;
+    releaseEvidencePreview();
+    document.querySelector("#evidence-preview")?.replaceChildren();
+  }
+  function persistRecord(dateKey, nextRecord) {
+    refreshDateContext();
+    const previousRecord = records[dateKey] ?? createDayRecord(dateKey);
+    const transition = prepareCompletionTransition(dateKey, previousRecord, nextRecord);
+    const nextRecords = {
+      ...records,
+      [dateKey]: transition.record
+    };
+    if (storage) saveRecords(storage, nextRecords);
+    records = nextRecords;
+    return transition.shouldCelebrate;
+  }
+  function renderEvidencePreview(entry) {
+    const root = document.querySelector("#evidence-preview");
+    if (!root) return;
+    releaseEvidencePreview();
+    evidenceObjectUrl = URL.createObjectURL(entry.blob);
+    const media = entry.type.startsWith("video/") ? document.createElement("video") : document.createElement("img");
+    media.className = "evidence-preview__media";
+    media.src = evidenceObjectUrl;
+    media.alt = entry.type.startsWith("video/") ? `\u62CD\u6444\u51ED\u8BC1\u89C6\u9891\uFF1A${entry.name}` : `\u62CD\u6444\u51ED\u8BC1\u7167\u7247\uFF1A${entry.name}`;
+    media.setAttribute("aria-label", media.alt);
+    if (media instanceof HTMLVideoElement) {
+      media.controls = true;
+      media.preload = "metadata";
+    }
+    root.replaceChildren(media);
+  }
+  function reconcileMissingEvidence(dateKey) {
+    refreshDateContext();
+    if (evidenceOperations.isPending(dateKey)) return;
+    const record = records[dateKey];
+    if (!record?.evidence) return;
+    if (dayRelation(dateKey) === "future") {
+      renderEvidenceMessage("\u672A\u627E\u5230\u62CD\u6444\u51ED\u8BC1\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20");
+      showToast("\u672A\u627E\u5230\u62CD\u6444\u51ED\u8BC1\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20");
+      return;
+    }
+    try {
+      persistRecord(dateKey, setShootingEvidence(record, null));
+      if (dateKey === selectedDateKey) renderApp();
+      showToast("\u672A\u627E\u5230\u62CD\u6444\u51ED\u8BC1\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20");
+    } catch (error) {
+      console.error("Unable to reconcile missing shooting evidence.", error);
+      showToast("\u672A\u627E\u5230\u62CD\u6444\u51ED\u8BC1\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20\uFF1B\u8BB0\u5F55\u6682\u65F6\u65E0\u6CD5\u66F4\u65B0\u3002");
+    }
+  }
+  async function refreshEvidencePreview() {
+    const requestId = ++evidencePreviewRequest;
+    const dateKey = selectedDateKey;
+    const record = records[dateKey];
+    if (!record?.evidence) return;
+    if (!mediaDbAvailable()) {
+      renderEvidenceMessage("\u6B64\u6D4F\u89C8\u5668\u65E0\u6CD5\u8BFB\u53D6\u6216\u4FDD\u5B58\u62CD\u6444\u51ED\u8BC1\uFF0C\u666E\u901A\u6253\u5361\u4ECD\u53EF\u4F7F\u7528\u3002");
+      return;
+    }
+    try {
+      const entry = await getEvidence(dateKey);
+      if (refreshDateContext()) {
+        renderApp();
+        return;
+      }
+      if (requestId !== evidencePreviewRequest || dateKey !== selectedDateKey) return;
+      if (!entry?.blob) {
+        reconcileMissingEvidence(dateKey);
+        return;
+      }
+      renderEvidencePreview(entry);
+    } catch (error) {
+      console.error("Unable to load shooting evidence.", error);
+      if (requestId === evidencePreviewRequest && dateKey === selectedDateKey) {
+        showToast("\u62CD\u6444\u51ED\u8BC1\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5\u3002");
+      }
+    }
+  }
+  function renderSlate(record, relation) {
+    const root = document.querySelector("#daily-slate");
+    if (!root) return;
+    root.classList.remove("is-celebrating");
+    const complete = completionCount(record);
+    const percent = Math.round(completionPercent(record));
+    const streakEnd = relation === "future" ? todayDateKey : selectedDateKey;
+    const streak = calculateStreak(records, streakEnd);
+    const [year] = selectedDateKey.split("-");
+    root.dataset.state = relation === "future" ? "future" : complete === TASKS.length ? "complete" : complete === 0 ? "empty" : "current";
+    root.innerHTML = `
+    <div class="slate-clapper" aria-hidden="true"></div>
+    <div class="slate-copy">
+      <p class="eyebrow">DAILY SLATE \xB7 \u4ECA\u65E5\u573A\u8BB0\u677F</p>
+      <div>
+        <p class="slate-year">${year}</p>
+        <h2 id="daily-slate-title">${formatLongDate(selectedDateKey)}</h2>
+      </div>
+      <p class="slate-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        ${statusCopy(record, relation)}
+      </p>
+    </div>
+    <div class="slate-metrics">
+      <div
+        class="progress-ring"
+        style="--progress: ${percent * 3.6}deg"
+        role="img"
+        aria-label="\u5B8C\u6210\u8FDB\u5EA6 ${percent}%"
+      >
+        <span class="progress-ring__value">${percent}<small>%</small></span>
+        <span class="progress-ring__label">\u5B8C\u6210\u8FDB\u5EA6</span>
+      </div>
+      <dl class="slate-stats">
+        <div>
+          <dt>\u5DF2\u5B8C\u6210</dt>
+          <dd>${complete}<span>/5</span></dd>
+        </div>
+        <div>
+          <dt>\u8FDE\u7EED\u6536\u5DE5</dt>
+          <dd>${streak}<span>\u5929</span></dd>
+        </div>
+      </dl>
+    </div>
+  `;
+  }
+  function renderRegularTask(taskId, record, future) {
+    const task = TASK_DETAILS[taskId];
+    const complete = record.tasks[taskId] === true;
+    const stateText = future ? `${complete ? "\u5DF2\u5B8C\u6210" : "\u672A\u5B8C\u6210"} \xB7 \u53EA\u8BFB` : complete ? "\u5DF2\u5B8C\u6210 \xB7 \u70B9\u51FB\u64A4\u9500" : "\u5F85\u5B8C\u6210 \xB7 \u70B9\u51FB\u6253\u5361";
+    return `
+    <button
+      class="task-card task-card--${task.accent} ${complete ? "is-complete" : ""}"
+      type="button"
+      data-task-id="${taskId}"
+      aria-pressed="${complete}"
+      ${future ? "disabled" : ""}
+    >
+      <span class="task-card__topline">
+        <span class="task-index">TAKE ${task.index}</span>
+        <span class="task-check" aria-hidden="true">${complete ? "\u2713" : "\u25CB"}</span>
+      </span>
+      <span class="task-card__body">
+        <strong>${task.label}</strong>
+        <span>${task.prompt}</span>
+      </span>
+      <span class="task-state">${stateText}</span>
+    </button>
+  `;
+  }
+  function renderShootingTask(record, relation) {
+    const task = TASK_DETAILS.shooting;
+    const future = relation === "future";
+    const complete = record.tasks.shooting === true;
+    const stateText = complete ? "\u8BC1\u636E\u5DF2\u7559\u5B58 \xB7 \u81EA\u5A92\u4F53\u62CD\u6444\u5B8C\u6210" : "\u9700\u8981\u7167\u7247\u6216\u89C6\u9891\u4F5C\u4E3A\u5B8C\u6210\u8BC1\u636E";
+    const actionText = complete ? "\u66F4\u6362\u51ED\u8BC1" : "\u4E0A\u4F20\u51ED\u8BC1";
+    const evidence = record.evidence;
+    return `
+    <article
+      class="task-card task-card--shooting task-card--${task.accent} ${complete ? "is-complete" : ""}"
+      data-task-id="shooting"
+    >
+      <span class="task-card__topline">
+        <span class="task-index">EVIDENCE TAKE ${task.index}</span>
+        <span class="task-check" aria-hidden="true">${complete ? "\u2713" : "\u25CB"}</span>
+      </span>
+      <div class="shooting-copy">
+        <p class="shooting-kicker">${relation === "today" ? "\u4ECA\u65E5\u4E3B\u955C\u5934" : "\u5F53\u65E5\u4E3B\u955C\u5934"}</p>
+        <h3>${task.label}</h3>
+        <p>${task.prompt}</p>
+      </div>
+      <div class="evidence-preview" id="evidence-preview" aria-live="polite">
+        ${evidence ? '<p class="evidence-preview__pending">\u6B63\u5728\u8F7D\u5165\u62CD\u6444\u51ED\u8BC1\u2026</p>' : ""}
+      </div>
+      <div class="evidence-action">
+        <p id="shooting-state">${future ? `${stateText} \xB7 \u672A\u6765\u65E5\u671F\u53EA\u8BFB` : stateText}</p>
+        <div class="evidence-buttons">
+          <button
+            class="upload-button"
+            type="button"
+            data-upload-trigger
+            aria-describedby="shooting-state"
+            ${future ? "disabled" : ""}
+          >
+            <span aria-hidden="true">\uFF0B</span>
+            ${future ? "\u53EA\u8BFB\u9884\u89C8" : actionText}
+          </button>
+          ${complete ? `
+            <button
+              class="upload-button evidence-delete-button"
+              type="button"
+              data-delete-evidence
+              aria-describedby="shooting-state"
+              ${future ? "disabled" : ""}
+            >\u5220\u9664\u51ED\u8BC1</button>
+          ` : ""}
+        </div>
+      </div>
+    </article>
+  `;
+  }
+  function renderTasks(record, relation) {
+    const root = document.querySelector("#task-grid");
+    if (!root) return;
+    const future = relation === "future";
+    root.innerHTML = `
+    <div class="section-heading task-grid__heading">
+      <div>
+        <p class="eyebrow">TASK GRID \xB7 \u4E94\u9879\u5F00\u673A\u6E05\u5355</p>
+        <h2 id="task-grid-title">${relation === "today" ? "\u4ECA\u5929\uFF0C\u505A\u51FA\u4E94\u4E2A\u5C0F\u52A8\u4F5C" : "\u8FD9\u4E00\u5929\u7684\u4E94\u4E2A\u5C0F\u52A8\u4F5C"}</h2>
+      </div>
+      <p>${future ? "\u672A\u6765\u65E5\u671F\u4EC5\u4F9B\u67E5\u770B\uFF0C\u56DE\u5230\u4ECA\u5929\u6216\u8FC7\u53BB\u65E5\u671F\u5373\u53EF\u8BB0\u5F55\u3002" : "\u70B9\u6309\u5361\u7247\u5373\u53EF\u5207\u6362\u5B8C\u6210\u72B6\u6001\uFF1B\u81EA\u5A92\u4F53\u62CD\u6444\u9700\u8981\u6DFB\u52A0\u8BC1\u636E\u3002"}</p>
+    </div>
+    ${renderRegularTask("reading", record, future)}
+    ${renderRegularTask("english", record, future)}
+    ${renderRegularTask("research", record, future)}
+    ${renderShootingTask(record, relation)}
+    ${renderRegularTask("walking", record, future)}
+  `;
+  }
+  function renderWeek() {
+    const root = document.querySelector("#week-strip");
+    if (!root) return;
+    const days = weekKeys(selectedDateKey);
+    root.innerHTML = `
+    <div class="section-heading week-strip__heading">
+      <div>
+        <p class="eyebrow">WEEK STRIP \xB7 \u8FD1\u4E03\u65E5</p>
+        <h2 id="week-strip-title">\u8FD9\u4E00\u5468\u7684\u7247\u573A</h2>
+      </div>
+      <p>\u9009\u62E9\u4E00\u5929\u67E5\u770B</p>
+    </div>
+    <div class="week-list">
+      ${days.map((key) => {
+      const count = completionCount(records[key]);
+      const selected = key === selectedDateKey;
+      const complete = count === TASKS.length;
+      const today = key === todayDateKey;
+      return `
+          <button
+            class="week-day ${complete ? "is-complete" : ""}"
+            type="button"
+            data-date-key="${key}"
+            aria-label="${formatLongDate(key)}\uFF0C\u5B8C\u6210 ${count} \u9879${today ? "\uFF0C\u4ECA\u5929" : ""}"
+            ${selected ? 'aria-current="date"' : ""}
+          >
+            <span class="week-day__weekday">${today ? "\u4ECA" : formatWeekday(key)}</span>
+            <strong>${dayNumber(key)}</strong>
+            <span class="week-day__count">${complete ? "\u2713 \u6536\u5DE5" : `${count}/5`}</span>
+          </button>
+        `;
+    }).join("")}
+    </div>
+  `;
+  }
+  function updateDateNavigation() {
+    const todayButton = document.querySelector('[data-date-action="today"]');
+    if (!todayButton) return;
+    const onToday = selectedDateKey === todayDateKey;
+    todayButton.disabled = onToday;
+    todayButton.textContent = onToday ? "\u6B63\u5728\u4ECA\u5929" : "\u56DE\u5230\u4ECA\u5929";
+  }
+  function renderApp() {
+    if (typeof document === "undefined") return;
+    ensureState();
+    const record = records[selectedDateKey] ?? createDayRecord(selectedDateKey);
+    const relation = dayRelation(selectedDateKey);
+    releaseEvidencePreview();
+    renderSlate(record, relation);
+    renderWeek();
+    renderTasks(record, relation);
+    updateDateNavigation();
+    void refreshEvidencePreview();
+  }
+  function selectDate(key) {
+    ensureState();
+    try {
+      addDays(key, 0);
+    } catch {
+      return;
+    }
+    selectedDateKey = key;
+    renderApp();
+  }
+  function toggleRegularTask(taskId) {
+    ensureState();
+    if (selectedDateKey > todayDateKey || taskId === "shooting" || !TASKS.includes(taskId)) {
+      return;
+    }
+    const currentRecord2 = ensureRecord(selectedDateKey);
+    const nextRecord = setTask(currentRecord2, taskId, !currentRecord2.tasks[taskId]);
+    try {
+      const shouldCelebrate = persistRecord(selectedDateKey, nextRecord);
+      renderApp();
+      if (shouldCelebrate) showCompletionCelebration(selectedDateKey);
+    } catch {
+      showToast("\u8BB0\u5F55\u6CA1\u6709\u4FDD\u5B58\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u7684\u672C\u5730\u5B58\u50A8\u8BBE\u7F6E\u3002");
+    }
+  }
+  function handleClick(event) {
+    if (refreshDateContext()) renderApp();
+    const dateAction = event.target.closest("[data-date-action]");
+    if (dateAction) {
+      const action = dateAction.dataset.dateAction;
+      if (action === "today") selectDate(todayDateKey);
+      if (action === "previous") selectDate(addDays(selectedDateKey, -1));
+      if (action === "next") selectDate(addDays(selectedDateKey, 1));
+      return;
+    }
+    const weekDay = event.target.closest("[data-date-key]");
+    if (weekDay) {
+      selectDate(weekDay.dataset.dateKey);
+      return;
+    }
+    const taskButton = event.target.closest("button[data-task-id]");
+    if (taskButton) {
+      toggleRegularTask(taskButton.dataset.taskId);
+      return;
+    }
+    const deleteTrigger = event.target.closest("[data-delete-evidence]");
+    if (deleteTrigger && !deleteTrigger.disabled) {
+      void handleEvidenceDelete();
+      return;
+    }
+    const uploadTrigger = event.target.closest("[data-upload-trigger]");
+    if (uploadTrigger && !uploadTrigger.disabled) {
+      document.querySelector("#evidence-input")?.click();
+    }
+  }
+  async function handleEvidenceSelection(event) {
+    ensureState();
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    const dateKey = selectedDateKey;
+    try {
+      if (!file || dateKey > todayDateKey) return;
+      const validation = validateEvidence(file);
+      if (!validation.valid) {
+        showToast(validation.message);
+        return;
+      }
+      if (!mediaDbAvailable()) {
+        showToast("\u6B64\u6D4F\u89C8\u5668\u65E0\u6CD5\u4FDD\u5B58\u62CD\u6444\u51ED\u8BC1\uFF0C\u666E\u901A\u6253\u5361\u4ECD\u53EF\u4F7F\u7528\u3002");
+        return;
+      }
+      let operation;
+      try {
+        operation = await evidenceOperations.run(dateKey, () => saveEvidenceForDate({
+          dateKey,
+          file,
+          putEvidence,
+          getRecord: (key) => records[key],
+          persistRecord
+        }));
+      } catch (error) {
+        if (error instanceof EvidenceMutationError && error.phase === "record-write") {
+          console.error("Unable to save shooting evidence metadata.", error);
+          if (dateKey === selectedDateKey) {
+            renderEvidenceMessage("\u62CD\u6444\u51ED\u8BC1\u5DF2\u5199\u5165\uFF0C\u4F46\u8BB0\u5F55\u6CA1\u6709\u66F4\u65B0\u3002");
+          }
+          showToast("\u62CD\u6444\u51ED\u8BC1\u5DF2\u5199\u5165\uFF0C\u4F46\u8BB0\u5F55\u6CA1\u6709\u66F4\u65B0\uFF0C\u8BF7\u68C0\u67E5\u672C\u5730\u5B58\u50A8\u8BBE\u7F6E\u3002");
+        } else {
+          console.error("Unable to save shooting evidence.", error);
+          showToast("\u62CD\u6444\u51ED\u8BC1\u6CA1\u6709\u4FDD\u5B58\u6210\u529F\uFF0C\u8BF7\u5220\u9664\u65E7\u51ED\u8BC1\u6216\u9009\u62E9\u66F4\u5C0F\u7684\u6587\u4EF6\u3002");
+        }
+        return;
+      }
+      if (!operation.started) {
+        showToast("\u8FD9\u4E00\u5929\u7684\u62CD\u6444\u51ED\u8BC1\u6B63\u5728\u5904\u7406\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5\u3002");
+        return;
+      }
+      const result = operation.value;
+      if (result.status === "invalid") {
+        showToast(result.validation.message);
+        return;
+      }
+      clearEvidencePreviewFor(dateKey);
+      if (dateKey === selectedDateKey) renderApp();
+      if (result.persistResult) {
+        showCompletionCelebration(dateKey);
+      } else {
+        showToast(dateKey === selectedDateKey ? "\u62CD\u6444\u51ED\u8BC1\u5DF2\u4FDD\u5B58\u3002" : `${formatLongDate(dateKey)} \u7684\u62CD\u6444\u51ED\u8BC1\u5DF2\u4FDD\u5B58\u3002`);
+      }
+    } finally {
+      input.value = "";
+    }
+  }
+  async function handleEvidenceDelete() {
+    ensureState();
+    const dateKey = selectedDateKey;
+    const record = records[dateKey];
+    if (dateKey > todayDateKey) return;
+    if (!record?.evidence) return;
+    if (!mediaDbAvailable()) {
+      showToast("\u6B64\u6D4F\u89C8\u5668\u65E0\u6CD5\u5220\u9664\u62CD\u6444\u51ED\u8BC1\uFF0C\u666E\u901A\u6253\u5361\u4ECD\u53EF\u4F7F\u7528\u3002");
+      return;
+    }
+    let operation;
+    try {
+      operation = await evidenceOperations.run(dateKey, () => deleteEvidenceForDate({
+        dateKey,
+        deleteEvidence,
+        getRecord: (key) => records[key],
+        persistRecord
+      }));
+    } catch (error) {
+      if (error instanceof EvidenceMutationError && error.phase === "record-delete") {
+        console.error("Unable to clear shooting evidence metadata.", error);
+        if (dateKey === selectedDateKey) {
+          renderEvidenceMessage("\u62CD\u6444\u51ED\u8BC1\u5DF2\u5220\u9664\uFF0C\u4F46\u8BB0\u5F55\u6CA1\u6709\u66F4\u65B0\u3002");
+        }
+        showToast("\u51ED\u8BC1\u5DF2\u5220\u9664\uFF0C\u4F46\u8BB0\u5F55\u6CA1\u6709\u66F4\u65B0\uFF0C\u8BF7\u68C0\u67E5\u672C\u5730\u5B58\u50A8\u8BBE\u7F6E\u3002");
+      } else {
+        console.error("Unable to delete shooting evidence.", error);
+        showToast("\u62CD\u6444\u51ED\u8BC1\u6CA1\u6709\u5220\u9664\u6210\u529F\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5\u3002");
+      }
+      return;
+    }
+    if (!operation.started) {
+      showToast("\u8FD9\u4E00\u5929\u7684\u62CD\u6444\u51ED\u8BC1\u6B63\u5728\u5904\u7406\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5\u3002");
+      return;
+    }
+    clearEvidencePreviewFor(dateKey);
+    if (dateKey === selectedDateKey) renderApp();
+    showToast(dateKey === selectedDateKey ? "\u62CD\u6444\u51ED\u8BC1\u5DF2\u5220\u9664\u3002" : `${formatLongDate(dateKey)} \u7684\u62CD\u6444\u51ED\u8BC1\u5DF2\u5220\u9664\u3002`);
+  }
+  function handlePageHide() {
+    evidencePreviewRequest += 1;
+    releaseEvidencePreview();
+  }
+  function handleVisibilityChange() {
+    if (document.visibilityState === "visible" && refreshDateContext()) {
+      renderApp();
+    }
+  }
+  function handlePageShow(event) {
+    const calendarChanged = refreshDateContext();
+    if (calendarChanged || event.persisted) {
+      renderApp();
+    }
+  }
+  function initializeApp() {
+    storage = window.localStorage;
+    records = loadRecords(storage);
+    todayDateKey = getTodayKey();
+    selectedDateKey = todayDateKey;
+    document.addEventListener("click", handleClick);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.querySelector("#evidence-input")?.addEventListener("change", handleEvidenceSelection);
+    window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("pageshow", handlePageShow);
+    renderApp();
+  }
+  if (typeof window !== "undefined" && typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeApp, { once: true });
+    } else {
+      initializeApp();
+    }
+  }
+})();
+
+</script>
+  </body>
+</html>
