@@ -3,230 +3,237 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f5f7f6">
-  <meta name="description" content="拾片：粘贴公开视频链接，提取、预览并下载平台提供的视频文件。">
-  <title>拾片 · 视频提取</title>
+  <meta name="theme-color" content="#edf3ff">
+  <meta name="description" content="外区视频提取器：粘贴 X、YouTube、TikTok 或 Instagram 公开视频链接，提取、预览并下载。">
+  <title>外区视频提取器</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231845a8'/%3E%3Cpath d='M16 21a5 5 0 0 1 5-5h22a5 5 0 0 1 5 5v12M16 21v22a5 5 0 0 0 5 5h13' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='m28 25 11 7-11 7Z' fill='white'/%3E%3Cpath d='M47 39v13m-5-5 5 5 5-5' fill='none' stroke='%236de1cb' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <style>
 :root {
-  --page: #f5f7f6;
+  --page: #edf3ff;
   --paper: #ffffff;
-  --ink: #202e29;
-  --muted: #77847d;
-  --line: #e6ece8;
-  --green: #13a76b;
-  --green-dark: #0a8855;
-  --green-soft: #edf8f1;
-  --error: #b44336;
-  --error-soft: #fff5f2;
+  --ink: #182744;
+  --muted: #7787a3;
+  --line: #dfe7f5;
+  --blue: #1845a8;
+  --blue-hover: #123789;
+  --blue-soft: #edf3ff;
+  --mint: #4cbeb0;
+  --mint-dark: #168777;
+  --error: #ad463d;
+  --error-soft: #fff4f2;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
   color: var(--ink);
   background: var(--page);
   font-synthesis: none;
 }
 * { box-sizing: border-box; }
-body { margin: 0; font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { margin: 0; min-height: 100vh; font-size: 14px; -webkit-font-smoothing: antialiased; background: radial-gradient(ellipse at 12% 0%, #e2edff 0, transparent 42%), radial-gradient(ellipse at 97% 4%, #e7f5f5 0, transparent 32%), linear-gradient(180deg, #edf3ff 0%, #f4f7fd 85%); }
 button, textarea, input { font: inherit; }
 button, a, input { -webkit-tap-highlight-color: transparent; }
 button, a { touch-action: manipulation; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 a { color: inherit; text-decoration: none; }
-button, a, textarea { outline-offset: 5px; }
-:focus-visible { outline: 2px solid var(--green-dark); }
+button, a, textarea { outline-offset: 4px; }
+:focus-visible { outline: 3px solid #7d9fde; }
 [hidden] { display: none !important; }
-button svg, a svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.shell { max-width: 1060px; margin-inline: auto; padding-inline: 28px; }
-.site-header { min-height: 105px; display: flex; align-items: center; justify-content: space-between; }
-.brand { display: inline-flex; align-items: center; gap: 11px; font-size: 22px; font-weight: 650; letter-spacing: 2px; }
-.brand-mark { display: grid; place-items: center; width: 37px; height: 42px; border-radius: 11px; background: var(--green); position: relative; }
-.brand-mark::before, .brand-mark::after { content: ""; position: absolute; width: 3px; height: 23px; top: 10px; background: repeating-linear-gradient(to bottom, white 0px, white 3px, transparent 3px, transparent 7px); opacity: .65; }
-.brand-mark::before { left: 4px; }.brand-mark::after { right: 4px; }
-.brand-mark svg { width: 23px; height: 23px; fill: white; stroke: none; transform: translateX(-1px); }
-.brand-en { display: block; font-size: 7px; font-weight: 550; letter-spacing: 2.4px; margin-top: 3px; color: var(--muted); }
-.text-button { border: 0; background: none; color: var(--muted); padding: 7px 0; line-height: 1.5; }
-.text-button:hover { color: var(--green-dark); }
-.help-trigger { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.help-trigger > span { border: 1px solid #a5b2aa; border-radius: 50%; width: 16px; height: 16px; line-height: 14px; text-align: center; font-size: 11px; }
-.intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; padding-top: 48px; padding-bottom: 42px; }
-.eyebrow { margin: 0 0 17px; display: flex; align-items: center; gap: 9px; color: var(--green-dark); font-size: 11px; font-weight: 550; letter-spacing: 1.5px; }
-.eyebrow > span { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
-h1 { font-family: "Songti SC", "STSong", "SimSun", serif; margin: 0; font-size: clamp(40px, 5vw, 55px); font-weight: 600; line-height: 1.25; letter-spacing: -1.8px; }
-.mobile-break { display: none; }
-.intro-description { color: var(--muted); font-size: 14px; margin: 19px 0 0; line-height: 1.8; }
-.platforms { display: grid; grid-template-columns: auto auto; gap: 14px 22px; padding: 0 6px 6px 0; }
-.platforms > span { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #647269; }
-.platforms b { width: 17px; text-align: center; font-size: 17px; font-weight: 500; color: #45554b; }
-.platforms .music-note { font-weight: 800; font-size: 24px; line-height: 15px; }
-.platforms svg { width: 17px; height: 15px; fill: #536158; }
-.platforms svg path { fill: var(--page); }
-.platforms svg.instagram-icon { fill: none; stroke: #536158; stroke-width: 1.6; height: 17px; }
-.workspace { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 22px; align-items: start; }
-.extractor { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 29px; box-shadow: 0 5px 20px #20332903; min-width: 0; }
-.form-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 22px; }
-h2 { font-size: 16px; margin: 0; font-weight: 600; }
-.service-state { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 10px; white-space: nowrap; }
-.state-dot { width: 5px; height: 5px; border-radius: 50%; background: #bdc5c0; }
-.service-state[data-state="online"] .state-dot { background: var(--green); }
-.service-state[data-state="offline"] { color: #a9754e; }
-.service-state[data-state="offline"] .state-dot { background: #c08a60; }
-.service-state .text-button { color: var(--green-dark); font-size: 10px; margin-left: 2px; }
-.input-wrap { border: 1px solid #e3eae5; border-radius: 12px; background: #fafcfb; transition: border-color .15s; }
-.input-wrap:focus-within { border-color: #78cda7; box-shadow: 0 0 0 3px #13a76b09; }
-.input-wrap.has-error { border-color: #d89b92; }
-textarea { display: block; width: 100%; padding: 19px 17px 10px; resize: vertical; border: 0; border-radius: 12px; background: transparent; min-height: 114px; max-height: 260px; line-height: 1.8; color: var(--ink); font-size: 14px; overflow-wrap: anywhere; }
-textarea::placeholder { color: #9ba69f; }
+svg { display: block; }
+button svg, a svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.shell { max-width: 1048px; margin-inline: auto; padding-inline: 24px; }
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 46px; padding-bottom: 28px; }
+.brand-block { position: relative; padding-bottom: 20px; }
+.brand { display: inline-flex; align-items: center; gap: 14px; }
+.brand h1 { margin: 0; font-size: 27px; line-height: 1.3; letter-spacing: -.8px; font-weight: 650; }
+.brand-mark { display: grid; place-items: center; width: 51px; height: 51px; border-radius: 15px; background: linear-gradient(145deg, #2556bb, #153c91); box-shadow: 0 5px 14px #1b469c24, inset 0 1px 0 #ffffff28; }
+.brand-mark svg { width: 38px; height: 38px; stroke-width: 2; }
+.brand-mark .brand-frame { stroke: white; }
+.brand-mark .brand-play { fill: white; stroke: none; }
+.brand-mark .brand-arrow { stroke: #76e3d2; stroke-width: 2.7; }
+.brand-description { margin: 0; position: absolute; left: 65px; bottom: 0; color: #788ca9; font-size: 12px; letter-spacing: .6px; }
+.text-button { border: 0; background: none; color: var(--muted); padding: 7px 0; line-height: 1.5; transition: color .15s; }
+.text-button:hover:not(:disabled) { color: var(--blue); }
+.help-trigger { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #d6e2f3; background: #ffffff75; border-radius: 30px; padding: 9px 14px; font-size: 11px; color: #6b7f9f; margin-top: -9px; }
+.help-trigger:hover { background: white; border-color: #b6c9e8; }
+.help-trigger svg { width: 15px; height: 15px; stroke-width: 1.5; }
+.platform-section { margin-bottom: 22px; }
+.platforms { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 79px; padding: 15px 7px; border: 1px solid #dfe8f6; border-radius: 17px; background: #ffffff96; box-shadow: inset 0 1px 0 #fff; }
+.platform-item { display: flex; align-items: center; justify-content: center; gap: 11px; font-size: 12px; font-weight: 550; letter-spacing: -.1px; color: #4b5f80; }
+.platform-item + .platform-item { border-left: 1px solid #e4ebf7; }
+.platform-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: white; box-shadow: 0 2px 6px #1e376505; }
+.platform-icon svg { width: 19px; height: 19px; }
+.x-icon svg { fill: none; stroke: #202c40; stroke-width: 1.6; }
+.youtube-icon svg { width: 21px; fill: #ee525d; }.youtube-icon svg path { fill: white; }
+.tiktok-icon svg { fill: #293a55; filter: drop-shadow(-1px 1px 0 #8ce0d6); }
+.instagram-icon svg { fill: none; stroke: #a365ad; stroke-width: 1.8; }.instagram-icon svg circle:last-child { fill: #a365ad; stroke-width: 0; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1fr) 286px; align-items: start; gap: 22px; }
+.extractor { background: var(--paper); border: 1px solid #dfe7f5; border-radius: 23px; padding: 29px; box-shadow: 0 9px 30px #284e8c07, 0 1px 2px #284e8c04; min-width: 0; }
+.form-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+h2 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.3px; }
+.service-state { display: flex; align-items: center; gap: 6px; color: #8b98ae; font-size: 10px; white-space: nowrap; }
+.state-dot { width: 6px; height: 6px; background: #bac5d5; border-radius: 50%; }
+.service-state[data-state="online"] { color: #75938c; }.service-state[data-state="online"] .state-dot { background: var(--mint); box-shadow: 0 0 0 3px #4cbeb00e; }
+.service-state[data-state="offline"] { color: #a98761; }.service-state[data-state="offline"] .state-dot { background: #c9a172; }
+.service-state .text-button { font-size: 10px; margin-left: 3px; color: var(--blue); }
+.input-wrap { position: relative; border: 1px solid #dce5f3; border-radius: 14px; background: linear-gradient(135deg, #f7f9fd, #f9fbfe); box-shadow: inset 0 1px 2px #25497d03; transition: border-color .15s, box-shadow .15s; }
+.input-wrap:focus-within { border-color: #91afe3; box-shadow: 0 0 0 3px #1845a80b; }
+.input-wrap.has-error { border-color: #daa6a0; box-shadow: 0 0 0 3px #ad463d06; }
+.input-link-icon { position: absolute; left: 17px; top: 21px; width: 22px; height: 22px; color: #91a6c8; pointer-events: none; }
+.input-link-icon svg { fill: none; width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+textarea { width: 100%; display: block; border: 0; background: transparent; border-radius: 14px; resize: vertical; min-height: 130px; max-height: 280px; padding: 20px 18px 12px 51px; color: #253e66; font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
+textarea::placeholder { color: #9aa9bf; }
 textarea:focus-visible { outline: none; }
-.input-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 12px 12px 16px; }
-.detected-platform { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #99a69d; }
+.input-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 0 12px 13px 17px; }
+.detected-platform { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #97a6bd; }
 .detected-platform svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.3; }
-.detected-platform.identified { color: var(--green-dark); }
-.input-tools { display: flex; gap: 13px; align-items: center; }
+.detected-platform.identified { color: var(--blue); }
+.input-tools { display: flex; align-items: center; gap: 13px; }
 .input-tools > .text-button { font-size: 11px; }
-.paste-button { display: flex; align-items: center; gap: 5px; background: white; border: 1px solid var(--line); border-radius: 7px; color: #586a5e; padding: 7px 10px; font-size: 11px; }
-.paste-button:hover { border-color: #90c7ab; color: var(--green-dark); }
-.paste-button svg { width: 13px; height: 13px; stroke-width: 1.4; }
-.input-feedback { margin: 6px 0 0; color: var(--error); font-size: 11px; line-height: 1.6; min-height: 0; }
+.paste-button { display: inline-flex; align-items: center; gap: 5px; padding: 7px 10px; border: 1px solid #dce6f6; border-radius: 7px; background: #fff; color: #5d7ea9; font-size: 11px; box-shadow: 0 1px 2px #21437304; transition: border-color .15s, color .15s; }
+.paste-button:hover:not(:disabled) { border-color: #9fb9e5; color: var(--blue); }
+.paste-button svg { width: 13px; height: 13px; stroke-width: 1.5; }
+.paste-button:disabled { opacity: .55; }
+.input-feedback { color: var(--error); font-size: 11px; line-height: 1.7; margin: 7px 0 0; }
 .input-feedback:empty { display: none; }
-.quality-row { margin-top: 25px; margin-bottom: 27px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
-.quality-selector { border: 0; padding: 0; margin: 0; }
-.quality-selector legend { padding: 0 0 11px; font-size: 12px; font-weight: 500; color: #627267; }
-.quality-options { display: flex; gap: 5px; background: #f4f7f5; border-radius: 8px; padding: 4px; }
+.quality-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 13px; margin: 24px 0; }
+.quality-selector { padding: 0; margin: 0; border: 0; }
+.quality-selector legend { padding: 0 0 11px; font-size: 12px; font-weight: 550; color: #60738f; }
+.quality-options { display: flex; gap: 7px; }
 .quality-options label { position: relative; cursor: pointer; }
-.quality-options input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
-.quality-options span { display: block; padding: 7px 12px; font-size: 11px; color: #7d8b81; border-radius: 5px; border: 1px solid transparent; }
-.quality-options input:checked + span { background: white; color: var(--green-dark); border-color: #e2eae5; box-shadow: 0 1px 3px #244a3110; font-weight: 500; }
-.quality-options input:focus-visible + span { outline: 2px solid var(--green-dark); outline-offset: 3px; }
-.quality-options input:disabled { cursor: not-allowed; }
-.quality-row > p { margin: 0 0 12px; font-size: 10px; color: #9ba69f; white-space: nowrap; }
-.primary-button { display: flex; justify-content: center; align-items: center; gap: 11px; width: 100%; min-height: 48px; padding: 12px 16px; border-radius: 10px; background: var(--green); color: white; border: 0; font-weight: 550; font-size: 14px; transition: background .15s, transform .15s; }
-.primary-button:hover:not(:disabled) { background: var(--green-dark); }
-.primary-button:active:not(:disabled) { transform: translateY(1px); }
-.primary-button:disabled { background: #c9d5ce; color: #f7faf8; }
-.primary-button svg { width: 17px; height: 17px; }
-.action-note { margin: 11px 0 0; color: #9ba69f; font-size: 10px; text-align: center; line-height: 1.6; }
-.try-example { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--line); display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 11px; }
-.try-example > span { color: #9ca79f; }
-.try-example .text-button { color: #668372; padding-block: 0; font-size: 11px; }
-.try-example .text-button span { margin-left: 3px; }
-.history-panel { background: #eef2ef; border-radius: 20px; padding: 26px 21px 20px; min-width: 0; }
-.aside-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.aside-heading h2 { font-size: 14px; }.aside-heading button { font-size: 11px; padding: 0; }
-.history-empty { text-align: center; padding: 27px 0 21px; }
-.history-illustration { display: grid; place-items: center; width: 70px; height: 70px; margin: 0 auto 15px; border-radius: 50%; background: #e6ede8; }
-.history-illustration svg { width: 37px; height: 37px; fill: none; stroke: #8aa895; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-.history-empty h3 { margin: 0; font-size: 12px; font-weight: 500; color: #6d8073; }
-.history-empty p { margin: 8px 0 0; font-size: 10px; line-height: 1.9; color: #97a39a; }
-.history-footnote { font-size: 9px; color: #9ba79f; text-align: center; margin: 0; }
-.small-tip { margin-top: 24px; padding-top: 17px; border-top: 1px solid #dfe7e1; display: flex; gap: 9px; }
-.small-tip > span { color: #7b9585; font-size: 19px; }
-.small-tip p { margin: 0; color: #88998e; font-size: 10px; line-height: 1.85; }
-.history-list { list-style: none; margin: 18px 0; padding: 0; display: grid; gap: 5px; }
-.history-list:empty { display: none; }
-.history-item { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; text-align: left; border: 0; border-radius: 8px; background: transparent; padding: 10px 7px; }
-.history-item:hover { background: #e3eae5; }
-.history-item .history-type { width: 25px; height: 28px; border: 1px solid #d6e0d8; background: #f8faf9; border-radius: 5px; color: #738579; display: grid; place-items: center; font-size: 11px; flex-shrink: 0; }
+.quality-options input { position: absolute; opacity: 0; inset: 0; margin: 0; width: 100%; height: 100%; cursor: pointer; }
+.quality-options span { display: block; border: 1px solid #e2e9f5; border-radius: 8px; background: #f9fbfe; padding: 9px 15px; color: #8391a8; font-size: 11px; transition: background .15s, border-color .15s, color .15s; }
+.quality-options input:checked + span { background: #edf3ff; color: var(--blue); border-color: #91aee0; font-weight: 550; }
+.quality-options input:hover:not(:disabled) + span { border-color: #adc3e7; }
+.quality-options input:focus-visible + span { outline: 3px solid #91afe3; outline-offset: 3px; }
+.quality-options input:disabled { cursor: not-allowed; }.quality-options input:disabled + span { opacity: .65; }
+.quality-row > p { margin: 0 0 12px; font-size: 10px; line-height: 1.6; color: #9aa8bb; text-align: right; }
+.action-bar { position: static; }
+.primary-button { display: flex; align-items: center; justify-content: center; gap: 11px; width: 100%; min-height: 50px; padding: 13px 17px; background: var(--blue); border: 1px solid #17409a; border-radius: 11px; color: white; font-size: 14px; font-weight: 550; letter-spacing: .5px; box-shadow: 0 4px 8px #1845a80c, inset 0 1px 0 #ffffff11; transition: background .15s, box-shadow .15s, transform .15s; }
+.primary-button:hover:not(:disabled) { background: var(--blue-hover); box-shadow: 0 5px 15px #1845a81e; }
+.primary-button:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+.primary-button:disabled { background: #b8c7e2; border-color: #b8c7e2; color: #f4f7fc; box-shadow: none; }
+.primary-button svg { width: 18px; height: 18px; }
+.try-example { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 15px; font-size: 10px; color: #9aa8ba; }
+.try-example .text-button { padding: 1px 0; color: #718cac; font-size: 10px; }.try-example .text-button:hover { color: var(--blue); }.try-example .text-button span { margin-left: 3px; }
+.history-panel { border: 1px solid #dfe7f4; border-radius: 23px; background: #f8faffbe; padding: 25px 22px 22px; min-width: 0; box-shadow: inset 0 1px 0 white; }
+.aside-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.aside-heading h2 { display: flex; align-items: center; gap: 7px; font-size: 14px; color: #4c6283; font-weight: 550; }
+.aside-heading h2 svg { width: 16px; height: 16px; fill: none; stroke: #7792ba; stroke-width: 1.45; stroke-linecap: round; stroke-linejoin: round; }
+.aside-heading button { padding: 0; font-size: 11px; }
+.history-empty { padding: 31px 0 22px; text-align: center; }
+.history-illustration { display: block; width: 88px; height: 76px; margin: 0 auto 17px; }
+.history-illustration svg { width: 88px; height: 76px; overflow: visible; }
+.history-card-back { fill: #e7effd; stroke: #c7d6ed; stroke-width: 1; }
+.history-card-front { fill: #ffffff; stroke: #c2d3ee; stroke-width: 1; filter: drop-shadow(0 4px 5px #7498d01c); }
+.history-play { fill: #d8e5fb; stroke: #bbceed; stroke-width: 1; stroke-linejoin: round; }
+.history-card-detail { fill: none; stroke: #a4bfdf; stroke-width: 1.5; stroke-linecap: round; }
+.history-empty h3 { font-size: 12px; color: #7c91b0; font-weight: 500; margin: 0; }
+.history-empty p { font-size: 10px; color: #a0adc1; line-height: 1.8; margin: 7px 0 0; }
+.history-footnote { margin: 0; font-size: 9px; text-align: center; color: #a7b3c6; }
+.small-tip { display: flex; align-items: flex-start; gap: 9px; margin-top: 24px; padding: 17px 0 0; border-top: 1px solid #e1e9f5; }
+.small-tip > svg { width: 17px; height: 17px; flex-shrink: 0; fill: none; stroke: #86a2c9; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; }
+.small-tip h3 { color: #8197b6; font-size: 10px; font-weight: 500; margin: 1px 0 6px; }
+.small-tip p { color: #9aaac1; font-size: 10px; line-height: 1.8; margin: 0; }
+.history-list { margin: 18px 0; padding: 0; list-style: none; display: grid; gap: 3px; }.history-list:empty { display: none; }
+.history-item { display: flex; align-items: center; gap: 10px; min-width: 0; width: 100%; padding: 10px 7px; border: 0; border-radius: 9px; background: transparent; text-align: left; transition: background .15s; }
+.history-item:hover { background: #eaf1fc; }
+.history-item .history-type { width: 30px; height: 33px; flex-shrink: 0; border: 1px solid #dde7f7; border-radius: 7px; display: grid; place-items: center; background: white; color: #6a88b8; font-size: 12px; }
 .history-item-copy { min-width: 0; flex: 1; }
-.history-item strong { display: block; font-size: 11px; font-weight: 500; color: #526b5b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.history-item small { display: block; color: #96a399; font-size: 9px; margin-top: 5px; }
-.history-arrow { color: #8ea194; font-size: 14px; }
-.expectations { text-align: center; padding: 23px 0 35px; color: #97a39b; font-size: 10px; line-height: 1.8; }
-.expectations p { margin: 3px 0; }.expectations p span { font-size: 15px; margin-right: 4px; vertical-align: -1px; }
-.site-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding-top: 22px; padding-bottom: 28px; color: #a3ada6; font-size: 10px; }
-.footer-dot { margin-inline: 8px; }
-.job-panel, .result-panel { border-top: 1px solid var(--line); margin-top: 26px; padding-top: 24px; }
-.job-heading { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
-.section-caption { margin: 0 0 6px; font-size: 10px; color: var(--green-dark); }
-.job-heading h3 { font-size: 16px; font-weight: 500; margin: 0; }
-.job-heading .text-button { font-size: 11px; }
-.progress-track { width: 100%; overflow: hidden; height: 5px; background: #eaf1ed; border-radius: 4px; margin: 21px 0 10px; }
-.progress-track > span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .3s; }
-.progress-track.indeterminate > span { width: 28%; animation: pending 1.7s ease-in-out infinite; }
-.progress-footer { display: flex; gap: 15px; justify-content: space-between; color: var(--muted); font-size: 11px; line-height: 1.7; }
-.progress-footer p { margin: 0; overflow-wrap: anywhere; }.progress-footer > span { color: var(--green-dark); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.notice { display: flex; align-items: flex-start; gap: 11px; margin-top: 22px; border-radius: 10px; padding: 16px; }
-.notice h3 { font-size: 12px; font-weight: 550; margin: 0 0 5px; }
-.notice p { font-size: 11px; line-height: 1.8; margin: 0; overflow-wrap: anywhere; }
-.notice-icon { border: 1px solid currentColor; border-radius: 50%; width: 16px; height: 16px; display: grid; place-items: center; flex-shrink: 0; font-size: 10px; line-height: 1; }
-.error-notice { background: var(--error-soft); color: var(--error); }.error-notice .text-button { color: var(--error); font-size: 11px; margin-top: 5px; padding-bottom: 0; }
-.connection-notice { background: #f7f4ee; color: #967b54; }
-.result-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.success-label { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 550; color: var(--green-dark); }
-.success-label svg { width: 19px; height: 19px; border-radius: 50%; background: var(--green-soft); fill: none; stroke: var(--green); stroke-width: 1.7; }
-.result-platform { font-size: 10px; color: var(--muted); }
-.video-wrap { background: #13251b; border-radius: 10px; overflow: hidden; display: flex; justify-content: center; }
-.video-wrap video { display: block; width: 100%; max-height: 450px; min-height: 170px; }
-.result-panel h3 { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; margin: 16px 0 7px; font-weight: 550; }
-.result-metadata { display: flex; flex-wrap: wrap; gap: 7px 15px; color: var(--muted); font-size: 11px; margin-bottom: 20px; }
-.result-metadata span + span { position: relative; }.result-metadata span + span::before { content: "·"; position: absolute; left: -9px; color: #b3bcb6; }
-.download-button { min-height: 45px; }
-.download-note, .preview-feedback { color: #93a097; font-size: 10px; line-height: 1.8; margin: 10px 0 0; }.preview-feedback { color: #a8794e; }
-dialog { padding: 27px; width: min(500px, calc(100vw - 36px)); max-height: calc(100dvh - 48px); background: white; border: 1px solid var(--line); border-radius: 18px; color: var(--ink); box-shadow: 0 25px 100px #152d2230; }
-dialog::backdrop { background: #1c352747; backdrop-filter: blur(3px); }
-.dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }.dialog-heading h2 { font-family: "Songti SC", "STSong", "SimSun", serif; font-size: 23px; }
-.close-button { flex-shrink: 0; width: 30px; height: 30px; font-size: 23px; line-height: 1; border: 0; background: #f2f6f3; color: #7b8e81; border-radius: 50%; }
-.help-steps { padding: 0 0 0 23px; margin: 26px 0; }.help-steps li { margin: 18px 0; padding-left: 5px; color: var(--green-dark); }.help-steps b { color: var(--ink); font-size: 13px; font-weight: 550; }.help-steps p { color: var(--muted); font-size: 12px; line-height: 1.8; margin: 5px 0 0; }
-.help-faq { border-top: 1px solid var(--line); padding-top: 6px; }.help-faq h3 { font-size: 12px; margin: 18px 0 5px; font-weight: 550; }.help-faq p { color: var(--muted); font-size: 11px; line-height: 1.9; margin: 0; }
-.toast { position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); max-width: calc(100vw - 40px); width: max-content; padding: 12px 18px; background: #273f30; color: white; border-radius: 10px; z-index: 20; box-shadow: 0 8px 25px #20332915; font-size: 12px; line-height: 1.7; }
-.noscript-notice { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px; background: var(--error-soft); color: var(--error); text-align: center; z-index: 99; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.history-item strong { display: block; font-size: 11px; line-height: 1.5; font-weight: 500; color: #4d658a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item small { display: block; margin-top: 4px; color: #9cacc3; font-size: 9px; }
+.history-arrow { font-size: 15px; color: #91a8c7; }
+.site-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 24px; padding-bottom: 34px; font-size: 10px; color: #9daec6; }
+.site-footer > span:first-child { display: flex; align-items: center; gap: 5px; }.site-footer svg { width: 13px; height: 13px; fill: none; stroke: #9eafc7; stroke-width: 1; stroke-linejoin: round; }
+.job-panel { margin-top: 24px; border: 1px solid #dce8f7; border-radius: 13px; background: #f6f9ff; padding: 18px; }
+.job-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.section-caption { color: #7995be; font-size: 10px; margin: 0 0 5px; }
+.job-heading h3 { color: #375986; font-size: 15px; font-weight: 550; margin: 0; }
+.job-heading .text-button { font-size: 10px; color: #92a5c2; }
+.progress-track { width: 100%; height: 5px; border-radius: 5px; background: #e0eafa; overflow: hidden; margin: 18px 0 10px; }
+.progress-track > span { display: block; height: 100%; width: 0; border-radius: inherit; background: #4f76be; transition: width .3s; }
+.progress-track.indeterminate > span { width: 28%; animation: pending 1.8s ease-in-out infinite; }
+.progress-footer { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; font-size: 10px; color: #879bb8; line-height: 1.8; }
+.progress-footer p { margin: 0; overflow-wrap: anywhere; }.progress-footer > span { color: var(--blue); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.notice { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; padding: 15px; border-radius: 11px; }
+.notice h3 { font-size: 11px; font-weight: 550; margin: 0 0 5px; }.notice p { margin: 0; font-size: 10px; line-height: 1.8; overflow-wrap: anywhere; }
+.notice-icon { display: grid; place-items: center; flex-shrink: 0; border: 1px solid currentColor; border-radius: 50%; width: 15px; height: 15px; font-size: 10px; line-height: 1; }
+.error-notice { background: var(--error-soft); color: var(--error); }.error-notice .text-button { font-size: 10px; color: var(--error); margin-top: 4px; padding-bottom: 0; }
+.connection-notice { color: #9b835f; background: #faf7f0; }
+.result-panel { margin-top: 27px; border-top: 1px solid var(--line); padding-top: 24px; }
+.result-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 17px; }
+.success-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 550; color: var(--mint-dark); }
+.success-label svg { width: 22px; height: 22px; background: #e6f7f1; border-radius: 7px; fill: none; stroke: #29a994; stroke-width: 1.7; }
+.result-platform { background: #eef3fc; border: 1px solid #e2eaf7; border-radius: 6px; padding: 4px 7px; color: #7890b3; font-size: 9px; }
+.video-wrap { display: flex; justify-content: center; overflow: hidden; border-radius: 13px; border: 1px solid #142444; background: #111e33; box-shadow: 0 4px 12px #172a4610; }
+.video-wrap video { display: block; width: 100%; min-height: 170px; max-height: 450px; }
+.result-panel h3 { margin: 17px 0 11px; color: #2e456b; font-size: 15px; line-height: 1.7; font-weight: 550; overflow-wrap: anywhere; }
+.result-metadata { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 21px; }
+.result-metadata span { padding: 5px 8px; border-radius: 5px; background: #f1f5fc; color: #8297b4; font-size: 10px; font-variant-numeric: tabular-nums; }
+.download-button { min-height: 46px; font-size: 13px; }
+.download-note, .preview-feedback { margin: 11px 0 0; font-size: 10px; line-height: 1.8; color: #9aaac0; }.preview-feedback { color: #ab8555; }
+dialog { width: min(480px, calc(100vw - 36px)); max-height: calc(100dvh - 48px); border: 1px solid #d7e2f4; border-radius: 22px; padding: 27px; background: #fcfdff; color: var(--ink); box-shadow: 0 30px 100px #0c285338; }
+dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
+.dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; }.dialog-heading h2 { font-size: 19px; color: #2b446c; }
+.close-button { display: grid; place-items: center; width: 29px; height: 29px; flex-shrink: 0; border: 0; border-radius: 8px; background: #ecf2fc; font-size: 23px; line-height: 1; color: #91a7c6; }
+.help-steps { padding: 0 0 0 22px; margin: 25px 0; }.help-steps li { margin: 18px 0; padding-left: 5px; color: #7899c9; }.help-steps b { color: #496387; font-size: 13px; font-weight: 550; }.help-steps p { margin: 5px 0 0; color: #8c9eb8; font-size: 12px; line-height: 1.8; }
+.help-faq { border-top: 1px solid var(--line); padding-top: 5px; }.help-faq h3 { margin: 18px 0 6px; font-size: 12px; font-weight: 550; color: #587393; }.help-faq p { margin: 0; color: #8fa0b7; font-size: 11px; line-height: 1.9; }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 40px); z-index: 20; padding: 12px 17px; border-radius: 11px; background: #244372; color: #f0f5ff; font-size: 12px; line-height: 1.7; box-shadow: 0 6px 22px #1a365b26; }
+.noscript-notice { position: fixed; left: 0; right: 0; bottom: 0; z-index: 99; background: var(--error-soft); color: var(--error); text-align: center; padding: 20px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 @keyframes pending { 0% { transform: translateX(-110%); } 100% { transform: translateX(460%); } }
 @media (max-width: 900px) {
-  .workspace { grid-template-columns: minmax(0, 1fr) 235px; gap: 17px; }
+  .workspace { grid-template-columns: minmax(0, 1fr) 244px; gap: 18px; }
   .extractor { padding: 24px; }.history-panel { padding-inline: 18px; }
-  .quality-row { flex-direction: column; align-items: flex-start; gap: 8px; }.quality-row > p { margin: 0; }
-  .platforms { gap: 14px; }.input-toolbar { flex-wrap: wrap; }.detected-platform { font-size: 9px; }
+  .quality-row > p { max-width: 84px; font-size: 9px; margin-bottom: 5px; }.quality-options span { padding-inline: 13px; }
+  .detected-platform { font-size: 9px; }.input-toolbar { padding-left: 13px; }
 }
 @media (max-width: 680px) {
-  .shell { padding-inline: 21px; }.site-header { min-height: 87px; }
-  .brand { font-size: 21px; }.brand-mark { width: 33px; height: 38px; border-radius: 9px; }.brand-mark::before, .brand-mark::after { top: 8px; }
-  .help-trigger { font-size: 11px; }.intro { padding-top: 31px; padding-bottom: 30px; display: block; }
-  .eyebrow { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 15px; } h1 { font-size: 45px; line-height: 1.23; letter-spacing: -1.5px; }.mobile-break { display: block; }
-  .intro-description { margin-top: 15px; font-size: 12px; }
-  .platforms { display: flex; gap: 17px; margin-top: 21px; padding: 0; flex-wrap: wrap; }.platforms > span { font-size: 9px; gap: 5px; }.platforms b { font-size: 15px; width: 15px; }.platforms svg { width: 15px; }.platforms .music-note { font-size: 21px; }
-  .workspace { display: flex; flex-direction: column; gap: 23px; }.extractor { width: 100%; padding: 22px 19px; border-radius: 17px; }
-  .form-heading { margin-bottom: 19px; } h2 { font-size: 15px; }.service-state { font-size: 9px; }.service-state .text-button { font-size: 9px; }
-  textarea { min-height: 113px; padding: 16px 14px 10px; font-size: 16px; line-height: 1.65; } textarea::placeholder { font-size: 13px; }
-  .input-toolbar { padding: 0 10px 11px 13px; }.detected-platform { font-size: 9px; }.input-tools { gap: 10px; }.paste-button { font-size: 10px; padding: 7px 8px; }
-  .quality-row { margin: 23px 0 0; flex-direction: row; align-items: flex-end; gap: 8px; }.quality-options span { padding-inline: 10px; }.quality-row > p { font-size: 9px; max-width: 78px; white-space: normal; line-height: 1.6; margin-bottom: 8px; }.quality-selector legend { font-size: 11px; padding-bottom: 10px; }
-  .action-bar { position: fixed; z-index: 10; bottom: 0; left: 0; width: 100%; padding: 12px 21px calc(10px + env(safe-area-inset-bottom, 0px)); background: #fffffff2; border-top: 1px solid var(--line); backdrop-filter: blur(10px); }.action-note { font-size: 9px; margin-top: 8px; }
-  body.has-result .action-bar { position: static; padding: 22px 0 0; border: 0; background: transparent; backdrop-filter: none; }
-  .primary-button { min-height: 48px; }.try-example { margin-top: 22px; padding-top: 19px; font-size: 10px; }.try-example .text-button { font-size: 10px; }
-  .history-panel { width: 100%; border-radius: 16px; padding: 20px; }.history-empty { padding: 22px 0; text-align: left; display: grid; grid-template-columns: 51px 1fr; column-gap: 15px; align-items: center; }.history-illustration { grid-row: span 2; width: 51px; height: 51px; margin: 0; }.history-illustration svg { width: 31px; height: 31px; }.history-empty h3 { font-size: 11px; align-self: end; }.history-empty p { font-size: 10px; margin-top: 4px; align-self: start; }.history-empty br { display: none; }
-  .history-footnote { font-size: 9px; text-align: left; }.small-tip { margin-top: 15px; padding-top: 13px; }.small-tip p { font-size: 10px; }
-  .history-list { grid-template-columns: 1fr; margin-block: 12px; }.history-item { padding-inline: 0; }.history-item strong { font-size: 12px; }
-  .expectations { padding: 20px 8px 28px; font-size: 9px; }.site-footer { margin-inline: 21px; padding: 19px 0 calc(130px + env(safe-area-inset-bottom, 0px)); font-size: 9px; gap: 5px; }
-  body.has-result .site-footer { padding-bottom: 28px; }.toast { bottom: calc(115px + env(safe-area-inset-bottom, 0px)); font-size: 11px; }
-  .result-panel h3 { font-size: 14px; }.job-heading h3 { font-size: 15px; }.notice { padding: 14px; }.notice p { font-size: 10px; }
-  dialog { padding: 23px; }.dialog-heading h2 { font-size: 21px; }
+  .shell { padding-inline: 17px; }
+  .site-header { padding-top: 25px; padding-bottom: 22px; gap: 10px; }
+  .brand-block { padding-bottom: 17px; }.brand { gap: 10px; }.brand h1 { font-size: 20px; letter-spacing: -.6px; }.brand-mark { width: 41px; height: 41px; border-radius: 12px; }.brand-mark svg { width: 33px; height: 33px; }.brand-description { left: 51px; font-size: 10px; letter-spacing: .25px; }
+  .help-trigger { padding: 8px; margin-top: -9px; border-radius: 50%; }.help-trigger svg { width: 17px; height: 17px; }.help-trigger > span { display: none; }
+  .platform-section { margin-bottom: 15px; }.platforms { min-height: 73px; padding: 12px 0; border-radius: 14px; }.platform-item { flex-direction: column; gap: 6px; font-size: 10px; letter-spacing: -.2px; }.platform-item + .platform-item { border-color: #e6edf8; }.platform-icon { width: 25px; height: 25px; border-radius: 8px; background: transparent; box-shadow: none; }.platform-icon svg { width: 19px; height: 19px; }.youtube-icon svg { width: 21px; }
+  .workspace { display: flex; flex-direction: column; gap: 17px; }.extractor { width: 100%; padding: 21px 18px 18px; border-radius: 19px; }.form-heading { margin-bottom: 16px; } h2 { font-size: 15px; }.service-state { font-size: 9px; gap: 5px; }.service-state .text-button { font-size: 9px; }.state-dot { width: 5px; height: 5px; }
+  .input-wrap { border-radius: 12px; }.input-link-icon { top: 18px; left: 14px; width: 20px; height: 20px; }.input-link-icon svg { width: 20px; height: 20px; }textarea { min-height: 100px; padding: 15px 14px 8px 43px; font-size: 16px; line-height: 1.75; }textarea::placeholder { font-size: 13px; }
+  .input-toolbar { padding: 0 10px 11px 13px; gap: 5px; }.detected-platform { font-size: 9px; letter-spacing: -.1px; }.input-tools { gap: 9px; }.input-tools > .text-button { font-size: 10px; }.paste-button { padding: 6px 8px; font-size: 10px; gap: 4px; }.paste-button svg { width: 12px; height: 12px; }
+  .quality-row { margin: 20px 0; gap: 8px; }.quality-selector legend { font-size: 11px; padding-bottom: 10px; }.quality-options { gap: 6px; }.quality-options span { padding: 8px 11px; font-size: 10px; border-radius: 7px; }.quality-row > p { max-width: 76px; margin-bottom: 3px; font-size: 9px; line-height: 1.7; }
+  .primary-button { min-height: 48px; border-radius: 10px; font-size: 14px; }.try-example { margin-top: 13px; font-size: 9px; }.try-example .text-button { font-size: 9px; }
+  .history-panel { width: 100%; padding: 20px 19px; border-radius: 19px; }.aside-heading h2 { font-size: 13px; }.aside-heading h2 svg { width: 15px; height: 15px; }.history-empty { display: grid; grid-template-columns: 63px 1fr; column-gap: 14px; align-items: center; padding: 21px 0 18px; text-align: left; }.history-illustration { width: 63px; height: 55px; margin: 0; grid-row: span 2; }.history-illustration svg { width: 63px; height: 55px; }.history-empty h3 { font-size: 11px; align-self: end; }.history-empty p { font-size: 10px; margin-top: 5px; align-self: start; }.history-footnote { font-size: 9px; text-align: left; }.small-tip { margin-top: 17px; padding-top: 14px; gap: 9px; }.small-tip h3 { font-size: 10px; }.small-tip p { font-size: 9px; }.small-tip > svg { width: 16px; height: 16px; }
+  .history-list { margin: 14px 0; }.history-item { padding: 8px 0; }.history-item strong { font-size: 12px; }.history-item small { font-size: 9px; }.history-item .history-type { width: 29px; height: 32px; }
+  .site-footer { padding-top: 20px; padding-bottom: calc(25px + env(safe-area-inset-bottom, 0px)); gap: 9px; font-size: 9px; }.site-footer > span:first-child { gap: 4px; }.site-footer svg { width: 12px; height: 12px; }
+  .job-panel { padding: 16px; margin-top: 20px; }.job-heading h3 { font-size: 14px; }.notice { padding: 13px; margin-top: 18px; }.notice h3 { font-size: 11px; }.notice p { font-size: 10px; }
+  .result-panel { margin-top: 24px; padding-top: 20px; }.result-panel h3 { font-size: 14px; }.result-metadata { gap: 6px; margin-bottom: 18px; }.result-metadata span { font-size: 9px; }.video-wrap { border-radius: 10px; }.download-note { font-size: 9px; }
+  dialog { padding: 23px; border-radius: 19px; }.dialog-heading h2 { font-size: 18px; }.toast { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); font-size: 11px; }
 }
-@media (max-width: 360px) { .shell { padding-inline: 15px; } h1 { font-size: 39px; }.extractor { padding-inline: 15px; }.platforms { gap: 11px; }.detected-platform { font-size: 8px; }.detected-platform svg { display: none; }.input-toolbar { padding-inline: 10px; }.quality-options span { padding-inline: 8px; }.quality-row > p { max-width: 64px; }.service-state { font-size: 8px; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }.progress-track.indeterminate > span { width: 100%; opacity: .35; } }
+@media (max-width: 360px) {
+  .shell { padding-inline: 13px; }.brand h1 { font-size: 19px; }.brand { gap: 9px; }.brand-description { left: 50px; font-size: 9px; }.extractor { padding-inline: 15px; }.quality-options span { padding-inline: 9px; }.quality-row > p { max-width: 68px; font-size: 8px; }.detected-platform { font-size: 8px; }.input-toolbar { padding-inline: 10px; }.input-tools { gap: 7px; }.input-tools > .text-button { font-size: 9px; }.platform-item { font-size: 9px; }.site-footer { font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }.progress-track.indeterminate > span { width: 100%; opacity: .4; }
+}
 
 </style>
   
   
 </head>
-<body>
+<body id="top">
   <header class="site-header shell">
-    <a href="./" class="brand" aria-label="拾片首页">
-      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 6 9 6-9 6Z"/></svg></span>
-      <span>拾片<span class="brand-en">SHI PIAN</span></span>
-    </a>
-    <button class="help-trigger text-button" id="help-open" type="button"><span aria-hidden="true">?</span> 使用说明</button>
+    <div class="brand-block">
+      <a href="#top" class="brand" aria-label="外区视频提取器，返回顶部">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="brand-frame" d="M10 16a5 5 0 0 1 5-5h18a5 5 0 0 1 5 5v9M10 16v17a5 5 0 0 0 5 5h10"/><path class="brand-play" d="m20 17 11 7-11 7Z"/><path class="brand-arrow" d="M36 30v12m-5-5 5 5 5-5"/></svg></span>
+        <h1 id="page-title">外区视频提取器</h1>
+      </a>
+      <p class="brand-description">一个链接，提取、预览、下载</p>
+    </div>
+    <button class="help-trigger text-button" id="help-open" type="button" aria-label="使用说明"><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M7.8 7.4a2.3 2.3 0 0 1 4.4 1c0 1.5-2.2 1.8-2.2 3M10 14h.01"/></svg><span>使用说明</span></button>
   </header>
 
   <main class="shell">
-    <section class="intro" aria-labelledby="page-title">
-      <div class="intro-copy">
-        <p class="eyebrow"><span></span> 视频提取工具</p>
-        <h1 id="page-title">粘贴链接，<br class="mobile-break">保存视频</h1>
-        <p class="intro-description">粘贴公开视频链接，提取后预览、下载。</p>
-      </div>
+    <section class="platform-section" aria-label="视频平台">
       <div class="platforms" aria-label="可尝试提取的平台">
-        <span><b aria-hidden="true">𝕏</b> X / Twitter</span>
-        <span><svg aria-hidden="true" viewBox="0 0 24 18"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 6 4-6 4Z"/></svg> YouTube</span>
-        <span><b class="music-note" aria-hidden="true">♪</b> TikTok</span>
-        <span><svg class="instagram-icon" aria-hidden="true" viewBox="0 0 20 20"><rect x="1.5" y="1.5" width="17" height="17" rx="5"/><circle cx="10" cy="10" r="4"/><circle cx="15" cy="5" r=".7"/></svg> Instagram</span>
+        <span class="platform-item"><span class="platform-icon x-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 3h4.5L20 21h-4.5ZM19.5 3 4.5 21"/></svg></span><span>X / Twitter</span></span>
+        <span class="platform-item"><span class="platform-icon youtube-icon" aria-hidden="true"><svg viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="16" rx="5"/><path d="m10 6 6 4-6 4Z"/></svg></span><span>YouTube</span></span>
+        <span class="platform-item"><span class="platform-icon tiktok-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3h3c.3 2.4 1.5 3.8 4 4v3a8.1 8.1 0 0 1-4-1v8a5 5 0 1 1-5-5v3a2 2 0 1 0 2 2Z"/></svg></span><span>TikTok</span></span>
+        <span class="platform-item"><span class="platform-icon instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.7" cy="6.4" r=".7"/></svg></span><span>Instagram</span></span>
       </div>
     </section>
 
@@ -234,13 +241,14 @@ dialog::backdrop { background: #1c352747; backdrop-filter: blur(3px); }
       <section class="extractor" aria-label="视频提取">
         <form id="extract-form" novalidate>
           <div class="form-heading">
-            <h2>放入视频链接</h2>
+            <h2>视频链接</h2>
             <div class="service-state" id="service-state" data-state="checking" aria-live="polite"><span class="state-dot"></span><span id="service-text">正在连接服务</span><button id="service-retry" class="text-button" type="button" hidden>重试</button></div>
           </div>
 
           <div class="input-wrap" id="input-wrap">
+            <span class="input-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m10 14 4-4M8.5 15.5l-1 1a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0m1 9a3.5 3.5 0 0 0 5 0l4-4a3.5 3.5 0 0 0-5-5l-1 1"/></svg></span>
             <label for="video-url" class="sr-only">视频链接</label>
-            <textarea id="video-url" name="url" rows="3" placeholder="粘贴 X、YouTube、TikTok 或 Instagram 的视频链接…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="url" aria-describedby="input-feedback"></textarea>
+            <textarea id="video-url" name="url" rows="3" placeholder="在这里粘贴视频链接…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="url" aria-describedby="input-feedback"></textarea>
             <div class="input-toolbar">
               <span class="detected-platform" id="detected-platform"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m8 12 4-4M7 14l-1 1a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0m0 8a3.5 3.5 0 0 0 5 0l4-4a3.5 3.5 0 0 0-5-5l-1 1" transform="translate(1 0) scale(.9)"/></svg>支持粘贴分享文字</span>
               <div class="input-tools"><button id="clear-url" type="button" class="text-button" hidden>清空</button><button id="paste-url" type="button" class="paste-button"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 4H4v13h12V4h-3M7 2h6v4H7Z"/></svg>粘贴链接</button></div>
@@ -250,21 +258,20 @@ dialog::backdrop { background: #1c352747; backdrop-filter: blur(3px); }
 
           <div class="quality-row">
             <fieldset class="quality-selector">
-              <legend>优先画质</legend>
+              <legend>选择画质</legend>
               <div class="quality-options">
                 <label><input type="radio" name="quality" value="best" checked><span>最高画质</span></label>
                 <label><input type="radio" name="quality" value="1080"><span>1080p</span></label>
                 <label><input type="radio" name="quality" value="720"><span>720p</span></label>
               </div>
             </fieldset>
-            <p>以平台实际提供为准</p>
+            <p>以视频源提供的画质为准</p>
           </div>
 
           <div class="action-bar">
             <button id="extract-button" class="primary-button" type="submit" disabled><span id="extract-label">连接服务中</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button>
-            <p class="action-note">获取平台视频源，保留画面原有文字与标识</p>
           </div>
-          <div class="try-example"><span>先试一条？</span><button id="example-url" class="text-button" type="button">填入 X 示例链接 <span aria-hidden="true">↗</span></button></div>
+          <div class="try-example"><span>还没有链接？</span><button id="example-url" class="text-button" type="button">试试 X 示例 <span aria-hidden="true">↗</span></button></div>
         </form>
 
         <section id="job-panel" class="job-panel" aria-label="提取进度" hidden>
@@ -274,7 +281,7 @@ dialog::backdrop { background: #1c352747; backdrop-filter: blur(3px); }
         </section>
 
         <section id="error-panel" class="notice error-notice" role="alert" hidden><span class="notice-icon" aria-hidden="true">!</span><div><h3 id="error-heading">暂时没能提取</h3><p id="error-message"></p><button type="button" id="retry-job" class="text-button">再试一次 →</button></div></section>
-        <section id="connection-notice" class="notice connection-notice" hidden><span class="notice-icon" aria-hidden="true">i</span><div><h3>提取服务尚未连接</h3><p>目前无法处理视频链接。连接恢复后即可提取，你填写的链接会保留。</p></div></section>
+        <section id="connection-notice" class="notice connection-notice" hidden><span class="notice-icon" aria-hidden="true">i</span><div><h3>提取服务尚未连接</h3><p>点击上方「重试」连接服务，已填链接会保留。</p></div></section>
 
         <section id="result-panel" class="result-panel" aria-label="提取结果" hidden>
           <div class="result-heading"><span class="success-label"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m5 10 3 3 7-7"/></svg>提取完成</span><span id="result-platform" class="result-platform"></span></div>
@@ -283,26 +290,25 @@ dialog::backdrop { background: #1c352747; backdrop-filter: blur(3px); }
           <h3 id="result-title"></h3>
           <div id="result-metadata" class="result-metadata"></div>
           <a id="download-video" class="primary-button download-button" href="#" download><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 2v11m-4-4 4 4 4-4M3 13v4h14v-4"/></svg>下载视频</a>
-          <p class="download-note">手机浏览器可能先打开视频，可长按视频或使用浏览器菜单保存。文件为临时保存，过期后请重新提取。</p>
+          <p class="download-note">手机可长按视频或使用浏览器菜单保存。临时文件过期后，请重新提取。</p>
         </section>
       </section>
 
       <aside class="history-panel" aria-labelledby="history-heading">
-        <div class="aside-heading"><h2 id="history-heading">最近提取</h2><button type="button" class="text-button" id="history-clear" hidden>清空</button></div>
-        <div id="history-empty" class="history-empty"><span class="history-illustration" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="9" y="11" width="30" height="28" rx="5"/><path d="M16 7h18M20 23l9 5-9 5Z"/></svg></span><h3>还没有提取记录</h3><p>成功提取后，链接会显示在这里，<br>方便下次重新提取。</p></div>
+        <div class="aside-heading"><h2 id="history-heading"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 7a7 7 0 1 1-.2 5M3 3v4h4M10 6v4l3 2"/></svg>最近提取</h2><button type="button" class="text-button" id="history-clear" hidden>清空</button></div>
+        <div id="history-empty" class="history-empty"><span class="history-illustration" aria-hidden="true"><svg viewBox="0 0 88 76"><rect class="history-card-back" x="17" y="9" width="54" height="42" rx="9" transform="rotate(-9 44 30)"/><rect class="history-card-front" x="15" y="22" width="58" height="43" rx="9"/><path class="history-play" d="m38 34 15 9-15 9Z"/><path class="history-card-detail" d="M22 30h5M61 57h5"/></svg></span><h3>还没有提取记录</h3><p>提取成功后，链接会保存在这里</p></div>
         <ul id="history-list" class="history-list"></ul>
         <p class="history-footnote" id="history-footnote">仅在本机保存最近 10 条链接</p>
-        <div class="small-tip"><span aria-hidden="true">↗</span><p>使用视频的「分享」按钮复制链接，再回到这里粘贴。</p></div>
+        <div class="small-tip"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 8V4h9v9h-4M10 10l6-6M3 7h5M3 7v10h10v-5"/></svg><div><h3>从分享菜单复制链接</h3><p>打开视频，点击「分享」→「复制链接」，回到这里粘贴即可。</p></div></div>
       </aside>
     </div>
 
-    <section class="expectations" aria-label="使用提示"><p><span aria-hidden="true">◇</span> 公开链接通常更容易提取；部分视频可能受登录、地区或平台限制。</p><p>请仅下载你有权保存和使用的内容。</p></section>
   </main>
 
-  <footer class="site-footer shell"><span>拾片<span class="footer-dot">·</span>视频链接提取</span><span>仅保存有权使用的内容</span></footer>
+  <footer class="site-footer shell"><span><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 1.5 13 4v4c0 3-5 6.5-5 6.5S3 11 3 8V4ZM5.5 7.7l1.7 1.7 3.3-3.3"/></svg>仅保存你有权使用的内容</span><span>外区视频提取器</span></footer>
 
   <dialog id="help-dialog" aria-labelledby="help-heading">
-    <div class="dialog-heading"><h2 id="help-heading">怎么把视频留下来？</h2><button id="help-close" class="close-button" type="button" aria-label="关闭使用说明">×</button></div>
+    <div class="dialog-heading"><h2 id="help-heading">使用说明</h2><button id="help-close" class="close-button" type="button" aria-label="关闭使用说明">×</button></div>
     <ol class="help-steps"><li><b>复制链接</b><p>在视频页面点击分享，复制公开的视频链接。</p></li><li><b>粘贴并提取</b><p>放入链接，选择优先画质。处理进度会显示在页面下方。</p></li><li><b>预览后下载</b><p>提取完成后先预览，再下载。手机上可用浏览器菜单保存文件。</p></li></ol>
     <div class="help-faq"><h3>下载下来就是原视频吗？</h3><p>获取的是平台提供的画质版本，不保证是作者上传前的文件。画面里原有的文字、Logo 和水印会保留。</p><h3>为什么某条链接不能提取？</h3><p>私密、需登录、地区受限、已删除的视频可能无法处理；网站变化也可能暂时影响提取。可换一条公开视频链接尝试。</p><h3>最近提取里的视频会一直保存吗？</h3><p>这里只在本机记住链接和标题。视频文件会过期；点击历史记录重新提取即可。</p></div>
   </dialog>
@@ -534,7 +540,7 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     const downloadURL = api(`/api/jobs/${encodeURIComponent(id)}/download`);
     elements.video.src = downloadURL;
     elements.download.href = downloadURL;
-    elements.download.download = 'shipian-video.mp4';
+    elements.download.download = 'video.mp4';
     elements.previewFeedback.hidden = true;
     saveHistory(submitted.url, elements.title.textContent);
     updateSubmit();
