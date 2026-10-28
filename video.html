@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#edf3ff">
-  <meta name="description" content="外区视频提取器：粘贴 X、YouTube、TikTok 或 Instagram 公开视频链接，提取、预览并下载。">
+  <meta name="description" content="外区视频提取器：粘贴抖音、小红书、X、YouTube、TikTok 或 Instagram 公开视频链接，无水印高清提取、预览并下载。">
   <title>外区视频提取器</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231845a8'/%3E%3Cpath d='M16 21a5 5 0 0 1 5-5h22a5 5 0 0 1 5 5v12M16 21v22a5 5 0 0 0 5 5h13' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='m28 25 11 7-11 7Z' fill='white'/%3E%3Cpath d='M47 39v13m-5-5 5 5 5-5' fill='none' stroke='%236de1cb' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <style>
@@ -56,7 +56,7 @@ button svg, a svg { width: 20px; height: 20px; fill: none; stroke: currentColor;
 .help-trigger:hover { background: white; border-color: #b6c9e8; }
 .help-trigger svg { width: 15px; height: 15px; stroke-width: 1.5; }
 .platform-section { margin-bottom: 22px; }
-.platforms { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 79px; padding: 15px 7px; border: 1px solid #dfe8f6; border-radius: 17px; background: #ffffff96; box-shadow: inset 0 1px 0 #fff; }
+.platforms { display: grid; grid-template-columns: repeat(6, 1fr); min-height: 79px; padding: 15px 7px; border: 1px solid #dfe8f6; border-radius: 17px; background: #ffffff96; box-shadow: inset 0 1px 0 #fff; }
 .platform-item { display: flex; align-items: center; justify-content: center; gap: 11px; font-size: 12px; font-weight: 550; letter-spacing: -.1px; color: #4b5f80; }
 .platform-item + .platform-item { border-left: 1px solid #e4ebf7; }
 .platform-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: white; box-shadow: 0 2px 6px #1e376505; }
@@ -64,6 +64,8 @@ button svg, a svg { width: 20px; height: 20px; fill: none; stroke: currentColor;
 .x-icon svg { fill: none; stroke: #202c40; stroke-width: 1.6; }
 .youtube-icon svg { width: 21px; fill: #ee525d; }.youtube-icon svg path { fill: white; }
 .tiktok-icon svg { fill: #293a55; filter: drop-shadow(-1px 1px 0 #8ce0d6); }
+.douyin-icon svg { fill: #161823; filter: drop-shadow(-1px 1px 0 #25f4ee) drop-shadow(1px -1px 0 #fe2c55); }
+.xhs-icon svg { width: 24px; height: 24px; } .xhs-icon svg rect { fill: #ff2442; } .xhs-icon svg text { fill: white; stroke: none; }
 .instagram-icon svg { fill: none; stroke: #a365ad; stroke-width: 1.8; }.instagram-icon svg circle:last-child { fill: #a365ad; stroke-width: 0; }
 .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 286px; align-items: start; gap: 22px; }
 .extractor { background: var(--paper); border: 1px solid #dfe7f5; border-radius: 23px; padding: 29px; box-shadow: 0 9px 30px #284e8c07, 0 1px 2px #284e8c04; min-width: 0; }
@@ -105,6 +107,16 @@ textarea:focus-visible { outline: none; }
 .quality-options input:hover:not(:disabled) + span { border-color: #adc3e7; }
 .quality-options input:focus-visible + span { outline: 3px solid #91afe3; outline-offset: 3px; }
 .quality-options input:disabled { cursor: not-allowed; }.quality-options input:disabled + span { opacity: .65; }
+.md5-option { position: relative; display: flex; align-items: center; gap: 11px; margin: -6px 0 22px; padding: 11px 13px; border: 1px solid #e2e9f5; border-radius: 10px; background: #f9fbfe; cursor: pointer; }
+.md5-option input { position: absolute; opacity: 0; inset: 0; margin: 0; width: 100%; height: 100%; cursor: pointer; }
+.md5-switch { position: relative; flex: none; width: 34px; height: 20px; border-radius: 10px; background: #d5deec; transition: background .15s; }
+.md5-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: white; box-shadow: 0 1px 2px #1e376530; transition: transform .15s; }
+.md5-option input:checked ~ .md5-switch { background: var(--blue); }
+.md5-option input:checked ~ .md5-switch::after { transform: translateX(14px); }
+.md5-option input:focus-visible ~ .md5-switch { outline: 3px solid #91afe3; outline-offset: 3px; }
+.md5-option input:disabled { cursor: not-allowed; }.md5-option:has(input:disabled) { opacity: .65; }
+.md5-text { display: grid; gap: 3px; }.md5-text b { font-size: 12px; font-weight: 600; color: #3b4d6b; }.md5-text small { font-size: 10px; color: #8a98ae; }
+.result-metadata .md5-fact { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
 .quality-row > p { margin: 0 0 12px; font-size: 10px; line-height: 1.6; color: #9aa8bb; text-align: right; }
 .action-bar { position: static; }
 .primary-button { display: flex; align-items: center; justify-content: center; gap: 11px; width: 100%; min-height: 50px; padding: 13px 17px; background: var(--blue); border: 1px solid #17409a; border-radius: 11px; color: white; font-size: 14px; font-weight: 550; letter-spacing: .5px; box-shadow: 0 4px 8px #1845a80c, inset 0 1px 0 #ffffff11; transition: background .15s, box-shadow .15s, transform .15s; }
@@ -192,7 +204,7 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
   .site-header { padding-top: 25px; padding-bottom: 22px; gap: 10px; }
   .brand-block { padding-bottom: 17px; }.brand { gap: 10px; }.brand h1 { font-size: 20px; letter-spacing: -.6px; }.brand-mark { width: 41px; height: 41px; border-radius: 12px; }.brand-mark svg { width: 33px; height: 33px; }.brand-description { left: 51px; font-size: 10px; letter-spacing: .25px; }
   .help-trigger { padding: 8px; margin-top: -9px; border-radius: 50%; }.help-trigger svg { width: 17px; height: 17px; }.help-trigger > span { display: none; }
-  .platform-section { margin-bottom: 15px; }.platforms { min-height: 73px; padding: 12px 0; border-radius: 14px; }.platform-item { flex-direction: column; gap: 6px; font-size: 10px; letter-spacing: -.2px; }.platform-item + .platform-item { border-color: #e6edf8; }.platform-icon { width: 25px; height: 25px; border-radius: 8px; background: transparent; box-shadow: none; }.platform-icon svg { width: 19px; height: 19px; }.youtube-icon svg { width: 21px; }
+  .platform-section { margin-bottom: 15px; }.platforms { min-height: 73px; padding: 12px 0; border-radius: 14px; }.platform-item { flex-direction: column; gap: 6px; font-size: 10px; letter-spacing: -.2px; }.platform-item + .platform-item { border-color: #e6edf8; }.platform-icon { width: 25px; height: 25px; border-radius: 8px; background: transparent; box-shadow: none; }.platform-icon svg { width: 19px; height: 19px; }.youtube-icon svg { width: 21px; }.xhs-icon svg { width: 23px; height: 23px; }.platforms { grid-template-columns: repeat(3, 1fr); row-gap: 12px; }.platform-item:nth-child(4) { border-left: 0; }
   .workspace { display: flex; flex-direction: column; gap: 17px; }.extractor { width: 100%; padding: 21px 18px 18px; border-radius: 19px; }.form-heading { margin-bottom: 16px; } h2 { font-size: 15px; }.service-state { font-size: 9px; gap: 5px; }.service-state .text-button { font-size: 9px; }.state-dot { width: 5px; height: 5px; }
   .input-wrap { border-radius: 12px; }.input-link-icon { top: 18px; left: 14px; width: 20px; height: 20px; }.input-link-icon svg { width: 20px; height: 20px; }textarea { min-height: 100px; padding: 15px 14px 8px 43px; font-size: 16px; line-height: 1.75; }textarea::placeholder { font-size: 13px; }
   .input-toolbar { padding: 0 10px 11px 13px; gap: 5px; }.detected-platform { font-size: 9px; letter-spacing: -.1px; }.input-tools { gap: 9px; }.input-tools > .text-button { font-size: 10px; }.paste-button { padding: 6px 8px; font-size: 10px; gap: 4px; }.paste-button svg { width: 12px; height: 12px; }
@@ -223,7 +235,7 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="brand-frame" d="M10 16a5 5 0 0 1 5-5h18a5 5 0 0 1 5 5v9M10 16v17a5 5 0 0 0 5 5h10"/><path class="brand-play" d="m20 17 11 7-11 7Z"/><path class="brand-arrow" d="M36 30v12m-5-5 5 5 5-5"/></svg></span>
         <h1 id="page-title">外区视频提取器</h1>
       </a>
-      <p class="brand-description">一个链接，提取、预览、下载</p>
+      <p class="brand-description">一个链接，无水印高清提取</p>
     </div>
     <button class="help-trigger text-button" id="help-open" type="button" aria-label="使用说明"><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M7.8 7.4a2.3 2.3 0 0 1 4.4 1c0 1.5-2.2 1.8-2.2 3M10 14h.01"/></svg><span>使用说明</span></button>
   </header>
@@ -231,6 +243,8 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
   <main class="shell">
     <section class="platform-section" aria-label="视频平台">
       <div class="platforms" aria-label="可尝试提取的平台">
+        <span class="platform-item"><span class="platform-icon douyin-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3h3c.3 2.4 1.5 3.8 4 4v3a8.1 8.1 0 0 1-4-1v8a5 5 0 1 1-5-5v3a2 2 0 1 0 2 2Z"/></svg></span><span>抖音</span></span>
+        <span class="platform-item"><span class="platform-icon xhs-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><text x="12" y="15.2" text-anchor="middle" font-size="7.5" font-weight="700" font-family="PingFang SC, sans-serif">小红书</text></svg></span><span>小红书</span></span>
         <span class="platform-item"><span class="platform-icon x-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 3h4.5L20 21h-4.5ZM19.5 3 4.5 21"/></svg></span><span>X / Twitter</span></span>
         <span class="platform-item"><span class="platform-icon youtube-icon" aria-hidden="true"><svg viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="16" rx="5"/><path d="m10 6 6 4-6 4Z"/></svg></span><span>YouTube</span></span>
         <span class="platform-item"><span class="platform-icon tiktok-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3h3c.3 2.4 1.5 3.8 4 4v3a8.1 8.1 0 0 1-4-1v8a5 5 0 1 1-5-5v3a2 2 0 1 0 2 2Z"/></svg></span><span>TikTok</span></span>
@@ -269,10 +283,16 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
             <p>以视频源提供的画质为准</p>
           </div>
 
+          <label class="md5-option">
+            <input type="checkbox" id="change-md5" name="change_md5">
+            <span class="md5-switch" aria-hidden="true"></span>
+            <span class="md5-text"><b>修改 MD5</b><small>画质不变，下载的文件与原视频 MD5 不同</small></span>
+          </label>
+
           <div class="action-bar">
             <button id="extract-button" class="primary-button" type="submit" disabled><span id="extract-label">连接服务中</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button>
           </div>
-          <div class="try-example"><span>还没有链接？</span><button id="example-url" class="text-button" type="button">试试 X 示例 <span aria-hidden="true">↗</span></button></div>
+          <div class="try-example"><span>还没有链接？</span><button id="example-url" class="text-button" type="button">试试抖音示例 <span aria-hidden="true">↗</span></button></div>
         </form>
 
         <section id="job-panel" class="job-panel" aria-label="提取进度" hidden>
@@ -282,7 +302,7 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
         </section>
 
         <section id="error-panel" class="notice error-notice" role="alert" hidden><span class="notice-icon" aria-hidden="true">!</span><div><h3 id="error-heading">暂时没能提取</h3><p id="error-message"></p><button type="button" id="retry-job" class="text-button">再试一次 →</button></div></section>
-        <section id="connection-notice" class="notice connection-notice" hidden><span class="notice-icon" aria-hidden="true">i</span><div><h3>提取服务尚未连接</h3><p>点击上方「重试」连接服务，已填链接会保留。</p></div></section>
+        <section id="connection-notice" class="notice connection-notice" hidden><span class="notice-icon" aria-hidden="true">i</span><div><h3>提取服务尚未连接</h3><p>正在自动重连，也可点击上方「重试」。已填链接会保留。</p></div></section>
 
         <section id="result-panel" class="result-panel" aria-label="提取结果" hidden>
           <div class="result-heading"><span class="success-label"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m5 10 3 3 7-7"/></svg>提取完成</span><span id="result-platform" class="result-platform"></span></div>
@@ -310,20 +330,22 @@ dialog::backdrop { background: #1d365848; backdrop-filter: blur(4px); }
 
   <dialog id="help-dialog" aria-labelledby="help-heading">
     <div class="dialog-heading"><h2 id="help-heading">使用说明</h2><button id="help-close" class="close-button" type="button" aria-label="关闭使用说明">×</button></div>
-    <ol class="help-steps"><li><b>复制链接</b><p>在视频页面点击分享，复制公开的视频链接。</p></li><li><b>粘贴并提取</b><p>放入链接，选择优先画质。处理进度会显示在页面下方。</p></li><li><b>预览后下载</b><p>提取完成后先预览，再下载。手机上可用浏览器菜单保存文件。</p></li></ol>
-    <div class="help-faq"><h3>下载下来就是原视频吗？</h3><p>获取的是平台提供的画质版本，不保证是作者上传前的文件。画面里原有的文字、Logo 和水印会保留。</p><h3>为什么某条链接不能提取？</h3><p>私密、需登录、地区受限、已删除的视频可能无法处理；网站变化也可能暂时影响提取。可换一条公开视频链接尝试。</p><h3>最近提取里的视频会一直保存吗？</h3><p>这里只在本机记住链接和标题。视频文件会过期；点击历史记录重新提取即可。</p></div>
+    <ol class="help-steps"><li><b>复制链接</b><p>在视频页面点击分享 →「复制链接」。抖音、小红书的整段分享文字可以直接粘贴。</p></li><li><b>粘贴并提取</b><p>放入链接，选择优先画质；需要时打开「修改 MD5」。处理进度会显示在页面下方。网络中断会自动重连；刷新页面可继续查看上次任务。</p></li><li><b>预览后下载</b><p>提取完成后先预览，再下载。手机上可用浏览器菜单保存文件。</p></li></ol>
+    <div class="help-faq"><h3>下载下来就是原视频吗？</h3><p>抖音、小红书、TikTok 取平台的无水印版本，其他平台本身不加水印；默认取最高画质。作者自己剪进画面的文字、Logo 和字幕会保留。</p><h3>「修改 MD5」是什么？</h3><p>打开后，下载的文件只改动文件里的隐藏信息，画面和声音完全不变，但文件 MD5 与原视频不同。提取完成后会显示新的 MD5。</p><h3>为什么某条链接不能提取？</h3><p>私密、需登录、地区受限、已删除的视频可能无法处理；网站变化也可能暂时影响提取。可换一条公开视频链接尝试。</p><h3>最近提取里的视频会一直保存吗？</h3><p>这里只在本机记住链接和标题。视频文件会过期；点击历史记录重新提取即可。</p></div>
   </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <noscript><div class="noscript-notice">请启用 JavaScript 后使用视频提取功能。</div></noscript>
 <script>
-window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudflare.com"};
+window.APP_CONFIG = {"apiBase": "https://api.pengpeng128.top"};
 </script>
 <script>
 (() => {
   'use strict';
 
-  const EXAMPLE_URL = 'https://x.com/AlanShao111/status/2108103781103886379?s=20';
+  const EXAMPLE_URL = 'https://www.douyin.com/video/7697950209954876714';
   const HISTORY_KEY = 'shipian.history.v1';
+  const TASK_KEY = 'waiqu.task.v1';
+  const JOB_ID_PATTERN = /^[a-f0-9]{32}$/;
   const $ = (id) => document.getElementById(id);
   const elements = {
     form: $('extract-form'), input: $('video-url'), wrap: $('input-wrap'), inputFeedback: $('input-feedback'),
@@ -337,7 +359,7 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     video: $('result-video'), title: $('result-title'), platform: $('result-platform'),
     metadata: $('result-metadata'), download: $('download-video'), previewFeedback: $('preview-feedback'),
     historyList: $('history-list'), historyEmpty: $('history-empty'), historyClear: $('history-clear'),
-    historyFootnote: $('history-footnote'), dialog: $('help-dialog'), toast: $('toast')
+    historyFootnote: $('history-footnote'), dialog: $('help-dialog'), toast: $('toast'), md5: $('change-md5')
   };
   const configuredBase = String(window.APP_CONFIG?.apiBase || '').trim().replace(/\/+$/, '');
   let apiBase;
@@ -352,9 +374,14 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
   let busy = false;
   let generation = 0;
   let pollTimer = null;
+  let healthTimer = null;
+  let expiryTimer = null;
   let requestController = null;
   let toastTimer = null;
   let activeRequest = null;
+  let activeJob = null;
+  let reconnectAttempts = 0;
+  let pageActive = true;
   let history = loadHistory();
 
   function api(path) {
@@ -371,13 +398,23 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     });
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.toLowerCase().includes('application/json')) {
-      throw new Error('提取服务返回了无效响应，请稍后重试。');
+      const error = new Error('提取服务返回了无效响应，请稍后重试。');
+      error.status = response.status;
+      throw error;
     }
-    const data = await response.json();
+    let data;
+    try { data = await response.json(); }
+    catch {
+      const error = new Error('提取服务返回了无效数据，请稍后重试。');
+      error.status = response.status;
+      throw error;
+    }
     if (!response.ok) {
       const raw = data?.error || data?.detail || data?.message;
       const message = typeof raw === 'string' ? raw : raw?.message;
-      throw new Error(message || (response.status === 429 ? '当前提取较多，请稍后再试。' : `提取服务暂时无法处理请求（${response.status}）。`));
+      const error = new Error(message || (response.status === 429 ? '当前提取较多，请稍后再试。' : `提取服务暂时无法处理请求（${response.status}）。`));
+      error.status = response.status;
+      throw error;
     }
     if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('提取服务返回了无效数据，请稍后重试。');
     return data;
@@ -387,15 +424,18 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     elements.submit.disabled = !serviceOnline || busy;
     elements.submitLabel.textContent = busy ? '正在提取，请稍候' : checkingHealth ? '连接服务中' : serviceOnline ? '提取视频' : '等待服务连接';
     for (const node of document.querySelectorAll('input[name="quality"]')) node.disabled = busy;
+    elements.md5.disabled = busy;
     elements.paste.disabled = busy;
     elements.clear.disabled = busy;
     elements.example.disabled = busy;
     elements.input.readOnly = busy;
     elements.retry.disabled = busy || !serviceOnline;
+    elements.retry.textContent = activeJob ? '继续查看任务 →' : '再试一次 →';
   }
 
   async function checkHealth() {
-    if (checkingHealth) return;
+    if (checkingHealth || !pageActive) return;
+    clearTimeout(healthTimer);
     checkingHealth = true;
     elements.service.dataset.state = 'checking';
     elements.serviceText.textContent = '正在连接服务';
@@ -417,11 +457,63 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
       elements.serviceRetry.hidden = serviceOnline;
       elements.connection.hidden = serviceOnline;
       updateSubmit();
+      if (pageActive) healthTimer = setTimeout(checkHealth, serviceOnline ? 30000 : 10000);
     }
   }
 
+  function rememberJob(id, submitted, quality, expiresAt = null) {
+    activeJob = { id, ...submitted, quality, apiBase, expiresAt, savedAt: Date.now() };
+    try { localStorage.setItem(TASK_KEY, JSON.stringify(activeJob)); }
+    catch { /* Continue in memory when browser storage is unavailable. */ }
+  }
+
+  function forgetJob() {
+    activeJob = null;
+    clearTimeout(expiryTimer);
+    try { localStorage.removeItem(TASK_KEY); } catch { /* Storage is optional. */ }
+  }
+
+  function loadJob() {
+    try {
+      const job = JSON.parse(localStorage.getItem(TASK_KEY) || 'null');
+      if (!job || job.apiBase !== apiBase || typeof job.id !== 'string' || !JOB_ID_PATTERN.test(job.id) ||
+          !parseVideoURL(job.url || '') || !['best', '1080', '720', '480'].includes(job.quality) ||
+          !Number.isFinite(job.savedAt) || Date.now() - job.savedAt > 7 * 86400000) return null;
+      return job;
+    } catch { return null; }
+  }
+
+  function showExpiredJob() {
+    forgetJob();
+    resetResult();
+    endWithError('这次提取的临时文件已过期，请点击「再试一次」重新获取。', '临时文件已过期');
+  }
+
+  function resumeJob() {
+    if (!activeJob) return;
+    const saved = activeJob;
+    activeRequest = { ...parseVideoURL(saved.url), quality: saved.quality };
+    elements.input.value = saved.url;
+    // The 480p backend option may come from an older client without a matching radio.
+    elements.form.elements.quality.value = ['best', '1080', '720'].includes(saved.quality) ? saved.quality : 'best';
+    inputChanged();
+    if (saved.expiresAt && Date.parse(saved.expiresAt) <= Date.now()) { showExpiredJob(); return; }
+    const token = invalidateCurrent();
+    busy = true;
+    reconnectAttempts = 0;
+    resetResult();
+    elements.error.hidden = true;
+    elements.job.hidden = false;
+    renderProgress({ status: 'queued' });
+    elements.jobStatus.textContent = '正在恢复上次任务';
+    elements.jobDetail.textContent = '继续查看原任务进度，不会重复提交视频。';
+    updateSubmit();
+    pollJob(saved.id, token, activeRequest);
+  }
+
   function parseVideoURL(value) {
-    const match = value.trim().match(/https?:\/\/[^\s<>"\u201c\u201d\u300c\u300d]+/i);
+    // Share texts glue Chinese punctuation straight onto the link, so stop at the first non-URL character.
+    const match = value.trim().match(/https?:\/\/[A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]+/i);
     if (!match) return null;
     const candidate = match[0].replace(/[\u3002\uff0c\uff01\uff1f\uff1b\uff09\u3011\u300b),.;!]+$/, '');
     try {
@@ -430,7 +522,9 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
       const host = parsed.hostname.toLowerCase();
       const belongsTo = (domain) => host === domain || host.endsWith(`.${domain}`);
       let platform;
-      if (belongsTo('x.com') || belongsTo('twitter.com')) platform = 'X / Twitter';
+      if (belongsTo('douyin.com') || belongsTo('iesdouyin.com')) platform = '抖音';
+      else if (belongsTo('xiaohongshu.com') || belongsTo('xhslink.com') || belongsTo('xhslink.cn')) platform = '小红书';
+      else if (belongsTo('x.com') || belongsTo('twitter.com')) platform = 'X / Twitter';
       else if (belongsTo('youtube.com') || host === 'youtu.be') platform = 'YouTube';
       else if (belongsTo('tiktok.com')) platform = 'TikTok';
       else if (belongsTo('instagram.com')) platform = 'Instagram';
@@ -458,6 +552,7 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
   }
 
   function resetResult() {
+    clearTimeout(expiryTimer);
     elements.result.hidden = true;
     elements.video.pause();
     elements.video.removeAttribute('src');
@@ -520,6 +615,8 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
   }
 
   function finishJob(job, id, submitted) {
+    rememberJob(id, submitted, activeRequest?.quality || 'best', job.expires_at || null);
+    if (job.expires_at && Date.parse(job.expires_at) <= Date.now()) { showExpiredJob(); return; }
     busy = false;
     elements.job.hidden = true;
     elements.error.hidden = true;
@@ -537,6 +634,12 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
       node.textContent = fact;
       elements.metadata.append(node);
     }
+    if (typeof job.md5 === 'string' && /^[a-f0-9]{32}$/.test(job.md5)) {
+      const node = document.createElement('span');
+      node.className = 'md5-fact';
+      node.textContent = typeof job.original_md5 === 'string' && job.original_md5 ? `MD5 已修改 · ${job.md5}` : `MD5 · ${job.md5}`;
+      elements.metadata.append(node);
+    }
     // Always use the known job endpoint, never a response-provided arbitrary URL.
     const downloadURL = api(`/api/jobs/${encodeURIComponent(id)}/download`);
     elements.video.src = downloadURL;
@@ -544,6 +647,9 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     elements.download.download = 'video.mp4';
     elements.previewFeedback.hidden = true;
     saveHistory(submitted.url, elements.title.textContent);
+    if (job.expires_at && Number.isFinite(Date.parse(job.expires_at))) {
+      expiryTimer = setTimeout(showExpiredJob, Math.min(2147483647, Math.max(0, Date.parse(job.expires_at) - Date.now())));
+    }
     updateSubmit();
     elements.result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
   }
@@ -556,10 +662,16 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     try {
       const job = await requestJSON(`/api/jobs/${encodeURIComponent(id)}`, {}, controller.signal);
       if (token !== generation) return;
-      if (!['queued', 'extracting', 'downloading', 'done', 'error'].includes(job.status)) throw new Error('提取服务返回了未知状态，请稍后重试。');
+      reconnectAttempts = 0;
+      if (!['queued', 'extracting', 'downloading', 'done', 'error'].includes(job.status)) {
+        const error = new Error('提取服务返回了未知状态，请稍后重试。');
+        error.permanent = true;
+        throw error;
+      }
       if (job.status === 'done') { finishJob(job, id, submitted); return; }
       if (job.status === 'error') {
         const error = typeof job.error === 'string' ? job.error : job.error?.message;
+        forgetJob();
         endWithError(error || '这条视频暂时无法提取。请确认链接公开可访问，或换一条链接尝试。');
         return;
       }
@@ -567,8 +679,21 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
       pollTimer = setTimeout(() => pollJob(id, token, submitted), 1400);
     } catch (error) {
       if (token !== generation) return;
-      endWithError(error.name === 'AbortError' ? '连接超时，暂时无法获取进度。后台可能仍在处理；稍后可重新尝试。' : error.message || '连接中断，暂时无法获取进度。请检查网络后重试。', '暂时无法获取进度');
-      checkHealth();
+      if (error.permanent || (error.status >= 400 && error.status < 500 && ![408, 429].includes(error.status))) {
+        forgetJob();
+        endWithError(error.message || '上次任务已不可用，请重新提取。', [404, 410].includes(error.status) ? '任务不存在或已过期' : '无法继续查看任务');
+      } else {
+        reconnectAttempts += 1;
+        const delay = Math.min(30000, 3000 * 2 ** Math.min(reconnectAttempts - 1, 4));
+        elements.jobStatus.textContent = '连接暂时中断，正在重连';
+        elements.jobDetail.textContent = `已保留原任务，${delay / 1000} 秒后重新获取进度。也可以关闭页面，稍后回来查看。`;
+        elements.progressTrack.classList.add('indeterminate');
+        elements.progressTrack.removeAttribute('aria-valuenow');
+        elements.progressTrack.setAttribute('aria-valuetext', '正在重新连接原任务');
+        elements.progressLabel.textContent = '';
+        pollTimer = setTimeout(() => pollJob(id, token, submitted), delay);
+        checkHealth();
+      }
     } finally {
       clearTimeout(timeout);
     }
@@ -579,7 +704,7 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     if (busy) return;
     const submitted = parseVideoURL(elements.input.value);
     if (!submitted) {
-      elements.inputFeedback.textContent = '请粘贴 X、YouTube、TikTok 或 Instagram 的完整视频链接。';
+      elements.inputFeedback.textContent = '请粘贴抖音、小红书、X、YouTube、TikTok 或 Instagram 的视频链接或分享文字。';
       elements.wrap.classList.add('has-error');
       elements.input.setAttribute('aria-invalid', 'true');
       elements.input.focus();
@@ -587,7 +712,10 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     }
     if (!serviceOnline) { toast('提取服务未连接，请先点击「重试」连接服务。'); return; }
     const quality = elements.form.elements.quality.value;
+    const changeMd5 = elements.md5.checked;
     const token = invalidateCurrent();
+    forgetJob();
+    reconnectAttempts = 0;
     activeRequest = { ...submitted, quality };
     busy = true;
     resetResult();
@@ -604,10 +732,11 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     try {
       const job = await requestJSON('/api/jobs', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: submitted.url, quality })
+        body: JSON.stringify({ url: submitted.url, quality, change_md5: changeMd5 })
       }, controller.signal);
       if (token !== generation) return;
-      if (typeof job.id !== 'string' || !job.id || job.id.length > 150) throw new Error('提取服务没有返回有效任务，请稍后重试。');
+      if (typeof job.id !== 'string' || !JOB_ID_PATTERN.test(job.id)) throw new Error('提取服务没有返回有效任务，请稍后重试。');
+      rememberJob(job.id, submitted, quality);
       clearTimeout(timeout);
       pollJob(job.id, token, submitted);
     } catch (error) {
@@ -671,16 +800,17 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
   elements.example.addEventListener('click', () => { elements.input.value = EXAMPLE_URL; inputChanged(); elements.input.focus(); });
   elements.serviceRetry.addEventListener('click', checkHealth);
   elements.retry.addEventListener('click', () => {
+    if (activeJob) { resumeJob(); return; }
     if (activeRequest) {
       elements.input.value = activeRequest.url;
-      elements.form.elements.quality.value = activeRequest.quality;
+      elements.form.elements.quality.value = ['best', '1080', '720'].includes(activeRequest.quality) ? activeRequest.quality : 'best';
       inputChanged();
     }
     startExtraction();
   });
   elements.cancel.addEventListener('click', () => {
-    invalidateCurrent(); busy = false; elements.job.hidden = true; updateSubmit();
-    toast('已停止等待。后台可能仍在处理这条视频。');
+    invalidateCurrent();
+    endWithError(activeJob ? '仅停止本页等待，后台任务不会因此取消。点击「继续查看任务」，或稍后重新打开此页面查看进度。' : '后台可能已经收到请求。需要时可重新提取。', '已停止等待');
   });
   elements.historyClear.addEventListener('click', () => {
     history = [];
@@ -692,6 +822,12 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     elements.previewFeedback.textContent = '浏览器暂时无法预览，可尝试下载。若文件已过期，请重新提取。';
     elements.previewFeedback.hidden = false;
   });
+  elements.download.addEventListener('click', (event) => {
+    if (activeJob?.expiresAt && Date.parse(activeJob.expiresAt) <= Date.now()) {
+      event.preventDefault();
+      showExpiredJob();
+    }
+  });
   $('help-open').addEventListener('click', () => elements.dialog.showModal());
   $('help-close').addEventListener('click', () => elements.dialog.close());
   elements.dialog.addEventListener('click', (event) => {
@@ -701,13 +837,24 @@ window.APP_CONFIG = {"apiBase": "https://labeled-stress-buddy-enrolled.trycloudf
     }
   });
   window.addEventListener('online', checkHealth);
-  window.addEventListener('pagehide', () => { invalidateCurrent(); clearTimeout(toastTimer); });
+  window.addEventListener('pagehide', () => {
+    pageActive = false;
+    invalidateCurrent(); clearTimeout(toastTimer); clearTimeout(healthTimer); clearTimeout(expiryTimer);
+  });
   window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
-    if (busy) { busy = false; elements.job.hidden = true; toast('页面已恢复。上次等待已停止，需要时请重新提取。'); }
+    pageActive = true;
+    const interruptedSubmission = busy && !activeJob;
+    busy = false;
+    activeJob = loadJob() || activeJob;
+    if (activeJob) resumeJob();
+    else if (interruptedSubmission) endWithError('页面离开时尚未收到任务编号，无法确认上次提交结果。后台可能已经收到请求，需要时可重新提取。', '上次提交结果尚未确认');
     checkHealth();
   });
-  renderHistory(); inputChanged(); checkHealth();
+  renderHistory(); inputChanged();
+  activeJob = loadJob();
+  if (activeJob) resumeJob();
+  checkHealth();
 })();
 
 </script>
